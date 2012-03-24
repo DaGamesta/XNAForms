@@ -1,0 +1,482 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XNAForms</name>
+    </assembly>
+    <members>
+        <member name="T:XNAForms.Forms.DockStyle">
+            <summary>
+            Indicates how controls dock to their owners.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.NONE">
+            <summary>
+            Indicates that a control should not attempt to specially dock to its owner.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.LEFT">
+            <summary>
+            Indicates that a control should attempt to dock to the left side of its owner.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.TOP">
+            <summary>
+            Indicates that a control should attempt to dock to the top side of its owner.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.RIGHT">
+            <summary>
+            Indicates that a control should attempt to dock to the right side of its owner.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.BOTTOM">
+            <summary>
+            Indicates that a control should attempt to dock to the bottom side of its owner.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.DockStyle.FILL">
+            <summary>
+            Indicates that a control should attempt to fill up the space provided by its owner.
+            </summary>
+        </member>
+        <member name="T:XNAForms.CursorType">
+            <summary>
+            Denotes a cursor type.
+            </summary>
+        </member>
+        <member name="F:XNAForms.CursorType.NORMAL">
+            <summary>
+            Denotes a normal cursor.
+            </summary>
+        </member>
+        <member name="F:XNAForms.CursorType.RESIZE_VERTICAL">
+            <summary>
+            Denotes a vertically resize cursor.
+            </summary>
+        </member>
+        <member name="F:XNAForms.CursorType.RESIZE_HORIZONTAL">
+            <summary>
+            Denotes a horizontally resize cursor.
+            </summary>
+        </member>
+        <member name="F:XNAForms.CursorType.RESIZE_DIAGONAL">
+            <summary>
+            Denotes a diagonally resize cursor.
+            </summary>
+        </member>
+        <member name="F:XNAForms.CursorType.TEXT">
+            <summary>
+            Denotes a text cursor.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Direction">
+            <summary>
+            Represents the four ordinal directions.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Direction.NONE">
+            <summary>
+            Represents no direction.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Direction.LEFT">
+            <summary>
+            Represents left.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Direction.UP">
+            <summary>
+            Represents up.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Direction.RIGHT">
+            <summary>
+            Represents right.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Direction.DOWN">
+            <summary>
+            Represents down.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.Placement">
+            <summary>
+            Indicates placement.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Placement.LEFT">
+            <summary>
+            Indicates left placement.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Placement.TOP">
+            <summary>
+            Indicates top placement.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Placement.RIGHT">
+            <summary>
+            Indicates right placement.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Placement.BOTTOM">
+            <summary>
+            Indicates bottom placement.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.Panel">
+            <summary>
+            Groups collections of controls together, and allows for two scrollbars as well.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.Control">
+            <summary>
+            Represents a visible object on a form.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.dockStyle">
+            <summary>
+            Docking style of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.position">
+            <summary>
+            Position of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.positionFunction">
+            <summary>
+            The function that returns the position of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.size">
+            <summary>
+            Size of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.sizeFunction">
+            <summary>
+            The function that returns the size of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Control.text">
+            <summary>
+            Additional text used by the control.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Control.rectangle">
+            <summary>
+            Gets the bounding rectangle of the control.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Panel.controls">
+            <summary>
+            The controls that the panel encapsulates.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.Panel.#ctor(XNAForms.Position,XNAForms.Size,XNAForms.Forms.Control[])">
+            <summary>
+            Creates a new panel.
+            </summary>
+            <param name="position">Position for the new panel.</param>
+            <param name="size">Size for the new panel.</param>
+            <param name="controls">Controls for the new panel to hold.</param>
+        </member>
+        <member name="M:XNAForms.Forms.Panel.Add(XNAForms.Forms.Control)">
+            <summary>
+            Adds a control.
+            </summary>
+            <param name="c">Control to add.</param>
+        </member>
+        <member name="T:XNAForms.Size">
+            <summary>
+            Represents an integral size.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Size.height">
+            <summary>
+            Height of the size.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Size.width">
+            <summary>
+            Width of the size.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Size.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new size.
+            </summary>
+            <param name="width">Width of the new size.</param>
+            <param name="height">Height of the new size.</param>
+        </member>
+        <member name="M:XNAForms.Size.#ctor(System.Single,System.Single)">
+            <summary>
+            Creates a new size, truncating the floats.
+            </summary>
+            <param name="width">Width of the new size.</param>
+            <param name="height">Height of the new size.</param>
+        </member>
+        <member name="T:XNAForms.Orientation">
+            <summary>
+            Indicates the orientation of an object.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Orientation.NONE">
+            <summary>
+            Indicates no specific orientation.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Orientation.HORIZONTAL">
+            <summary>
+            Indicates horizontal orientation.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Orientation.VERTICAL">
+            <summary>
+            Indicates vertical orientation.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.TextArea">
+            <summary>
+            Represents a text area.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.TextArea.#ctor(XNAForms.Position,XNAForms.Size,XNAForms.Forms.Placement)">
+            <summary>
+            Creates a new textarea.
+            </summary>
+            <param name="position">Position of the new textarea.</param>
+            <param name="size">Size of the new textarea.</param>
+            <param name="scrollbarPlacement">Placement of the new textarea's scrollbar.</param>
+        </member>
+        <member name="M:XNAForms.Forms.TextArea.AddText(XNAForms.Forms.Text)">
+            <summary>
+            Adds text to the textarea.
+            </summary>
+            <param name="text">The text to add.</param>
+        </member>
+        <member name="T:XNAForms.Forms.FormEventHandler">
+            <summary>
+            Represents the method(s) that handle various form events.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.Form">
+            <summary>
+            Represents a window, which make up the core of the graphical user interface.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Form.canResize">
+            <summary>
+            Whether or not the form can be resized.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Form.minSize">
+            <summary>
+            The minimum size of the form.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.Form.#ctor(XNAForms.Position,XNAForms.Size,System.String)">
+            <summary>
+            Creates a new form.
+            </summary>
+            <param name="position">Position for the new form.</param>
+            <param name="size">Size for the new form.</param>
+            <param name="title">Titlebar text for the new form.</param>
+        </member>
+        <member name="P:XNAForms.Forms.Form.isActive">
+            <summary>
+            Gets if the form is active.
+            </summary>
+        </member>
+        <member name="E:XNAForms.Forms.Form.onDraw">
+            <summary>
+            Fires when the form is drawn.
+            </summary>
+        </member>
+        <member name="E:XNAForms.Forms.Form.onUpdate">
+            <summary>
+            Fires when the form is updated.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Form.rectangle">
+            <summary>
+            Gets the bounding rectangle of the entire form, including the titlebar.
+            </summary>
+        </member>
+        <member name="T:XNAForms.GUI">
+            <summary>
+            Manages the graphical user interface.
+            </summary>
+        </member>
+        <member name="M:XNAForms.GUI.Add(XNAForms.Forms.Form)">
+            <summary>
+            Adds a form to the GUI.
+            </summary>
+            <param name="form">Form to add.</param>
+        </member>
+        <member name="M:XNAForms.GUI.BindCursor(XNAForms.CursorType,Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Sets the texture of a certain cursor.
+            </summary>
+            <param name="type">Cursor type.</param>
+            <param name="tex">The texture.</param>
+        </member>
+        <member name="M:XNAForms.GUI.BindFont(Microsoft.Xna.Framework.Graphics.SpriteFont)">
+            <summary>
+            Sets the font of the GUI.
+            </summary>
+            <param name="font">The spritefont to use as the font.</param>
+        </member>
+        <member name="M:XNAForms.GUI.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the GUI.
+            </summary>
+            <param name="sb">Spritebatch that should be used to draw.</param>
+        </member>
+        <member name="M:XNAForms.GUI.Initialize(Microsoft.Xna.Framework.Game)">
+            <summary>
+            Initializes the GUI.
+            </summary>
+            <param name="game">The game to be used.</param>
+        </member>
+        <member name="M:XNAForms.GUI.Update">
+            <summary>
+            Updates the GUI.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.Text">
+            <summary>
+            Represents colored text.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Text.color">
+            <summary>
+            Color of the text.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.Text.#ctor(XNAForms.Position,Microsoft.Xna.Framework.Color,System.String)">
+            <summary>
+            Creates new text.
+            </summary>
+            <param name="position">Position of the new text.</param>
+            <param name="color">Color of the new text.</param>
+            <param name="str">String of the new text.</param>
+        </member>
+        <member name="T:XNAForms.Position">
+            <summary>
+            Represents a lattice point on the coordinate plane.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Position.X">
+            <summary>
+            X coordinate of the position.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Position.Y">
+            <summary>
+            Y coordinate of the position.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Position.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new position.
+            </summary>
+            <param name="X">X coordinate of the new position.</param>
+            <param name="Y">Y coordinate of the new position.</param>
+        </member>
+        <member name="M:XNAForms.Position.op_Addition(XNAForms.Position,XNAForms.Position)">
+            <summary>
+            Adds two positions together.
+            </summary>
+            <param name="p1">First position.</param>
+            <param name="p2">Second position.</param>
+        </member>
+        <member name="M:XNAForms.Position.op_Subtraction(XNAForms.Position,XNAForms.Position)">
+            <summary>
+            Subtracts two positions.
+            </summary>
+            <param name="p1">First position.</param>
+            <param name="p2">Second position.</param>
+        </member>
+        <member name="M:XNAForms.Position.op_Implicit(XNAForms.Position)~Microsoft.Xna.Framework.Vector2">
+            <summary>
+            Converts a position to a Vector2.
+            </summary>
+            <param name="p">Position to convert.</param>
+        </member>
+        <member name="T:XNAForms.Forms.Scrollbar">
+            <summary>
+            Represents a movable scrollbar.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Scrollbar.scrollbarPosition">
+            <summary>
+            The Scrollbar position (that is, the position of the movable part).
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Scrollbar.totalFunction">
+            <summary>
+            The function that gets the amount of total items.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.Scrollbar.viewableFunction">
+            <summary>
+            Fires when the Scrollbar requests for the number of viewable items.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.Scrollbar.#ctor(XNAForms.Position,System.Int32,XNAForms.Orientation)">
+            <summary>
+            Creates a new Scrollbar.
+            </summary>
+            <param name="position">Position of the Scrollbar.</param>
+            <param name="size">Length/width of the Scrollbar.</param>
+            <param name="orientation">Optionally, the orientation of the Scrollbar.</param>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.isNeeded">
+            <summary>
+            Gets if the Scrollbar is needed.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.isVertical">
+            <summary>
+            Gets if the Scrollbar is vertical.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.scrollbarSize">
+            <summary>
+            Gets the size of the Scrollbar (that is, the movable part).
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.size">
+            <summary>
+            Gets the length/width of the Scrollbar.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.total">
+            <summary>
+            Gets the total number of items.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.value">
+            <summary>
+            Gets the value of the scrollbar.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Forms.Scrollbar.viewable">
+            <summary>
+            The function that gets the amount of viewable items.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.ControlEventHandler">
+            <summary>
+            Represents the method(s) that handle various control events.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.FuncHandler`1">
+            <summary>
+            Represents the method that returns the given type.
+            </summary>
+        </member>
+    </members>
+</doc>

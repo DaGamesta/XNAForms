@@ -11,13 +11,9 @@ namespace XNAForms.Forms
     /// </summary>
     public delegate void ControlEventHandler(object sender, EventArgs e);
     /// <summary>
-    /// Represents the function that returns the control's position.
+    /// Represents the method that returns the given type.
     /// </summary>
-    public delegate Position ControlPosFunc(object sender, EventArgs e);
-    /// <summary>
-    /// Represents the function that returns the control's size.
-    /// </summary>
-    public delegate Size ControlSizeFunc(object sender, EventArgs e);
+    public delegate T FuncHandler<T>(object sender, EventArgs e);
     /// <summary>
     /// Represents a visible object on a form.
     /// </summary>
@@ -36,7 +32,7 @@ namespace XNAForms.Forms
         /// <summary>
         /// The function that returns the position of the control.
         /// </summary>
-        public ControlPosFunc positionFunction;
+        public FuncHandler<Position> positionFunction;
         /// <summary>
         /// Gets the bounding rectangle of the control.
         /// </summary>
@@ -54,7 +50,7 @@ namespace XNAForms.Forms
         /// <summary>
         /// The function that returns the size of the control.
         /// </summary>
-        public ControlSizeFunc sizeFunction;
+        public FuncHandler<Size> sizeFunction;
         /// <summary>
         /// Additional text used by the control.
         /// </summary>

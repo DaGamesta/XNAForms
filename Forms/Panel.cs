@@ -13,7 +13,7 @@ namespace XNAForms.Forms
         /// <summary>
         /// The controls that the panel encapsulates.
         /// </summary>
-        protected internal List<Control> controls = new List<Control>();
+        protected List<Control> controls = new List<Control>();
 
         /// <summary>
         /// Creates a new panel.

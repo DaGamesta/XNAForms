@@ -53,7 +53,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                return new Rectangle(position.X, position.Y - 28, size.width, size.height + 28);
+                return new Rectangle(position.X, position.Y - tBarHeight, size.width, size.height + tBarHeight);
             }
         }
         private ResizeInfo res;
@@ -74,6 +74,13 @@ namespace XNAForms.Forms
                 return true;
             }
         }
+        private int tBarHeight
+        {
+            get
+            {
+                return (int)GUIHelper.font.MeasureString(text).Y + 8;
+            }
+        }
 
         /// <summary>
         /// Creates a new form.
@@ -89,11 +96,10 @@ namespace XNAForms.Forms
 
         internal override void Draw()
         {
-            int y = (int)GUIHelper.font.MeasureString(text).Y;
-            Rectangle titlebar = new Rectangle(position.X, position.Y - 28, size.width, 28);
+            Rectangle titlebar = new Rectangle(position.X, position.Y - tBarHeight, size.width, tBarHeight);
             GUIHelper.sb.Draw(tbTex, titlebar, new Color(255, 255, 255, alpha));
             GUIHelper.OutlineRect(titlebar, new Color(0, 0, 0, alpha));
-            GUIHelper.DrawStr(text, position + new Position((int)(titlebar.Height - y) / 2, -20), new Color(255, 255, 255, alpha));
+            GUIHelper.DrawStr(text, position + new Position(6, -tBarHeight + 4), new Color(255, 255, 255, alpha));
             Rectangle window = new Rectangle(position.X, position.Y, size.width, size.height);
             GUIHelper.FillRect(window, new Color(17, 17, 17, alpha));
             GUIHelper.OutlineRect(window, new Color(0, 0, 0, alpha));
@@ -109,15 +115,15 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
-            Rectangle titlebar = new Rectangle(position.X, position.Y - 28, size.width, 28);
+            Rectangle titlebar = new Rectangle(position.X, position.Y - tBarHeight, size.width, tBarHeight);
             if (!Input.LeftD)
             {
                 moving = false;
                 res.dir = Direction.NONE;
             }
-            bool maybeLeftResize = new Rectangle(position.X, position.Y - 28, 6, size.height + 28).IntersectsMouse() || (res.dir & Direction.LEFT) != 0;
-            bool maybeRightResize = new Rectangle(position.X + size.width - 6, position.Y - 28, 6, size.height + 28).IntersectsMouse() || (res.dir & Direction.RIGHT) != 0;
-            bool maybeTopResize = new Rectangle(position.X, position.Y - 28, size.width, 6).IntersectsMouse() || (res.dir & Direction.UP) != 0;
+            bool maybeLeftResize = new Rectangle(position.X, position.Y - tBarHeight, 6, size.height + tBarHeight).IntersectsMouse() || (res.dir & Direction.LEFT) != 0;
+            bool maybeRightResize = new Rectangle(position.X + size.width - 6, position.Y - tBarHeight, 6, size.height + tBarHeight).IntersectsMouse() || (res.dir & Direction.RIGHT) != 0;
+            bool maybeTopResize = new Rectangle(position.X, position.Y - tBarHeight, size.width, 6).IntersectsMouse() || (res.dir & Direction.UP) != 0;
             bool maybeBottomResize = new Rectangle(position.X, position.Y + size.height - 6, size.width, 6).IntersectsMouse() || (res.dir & Direction.DOWN) != 0;
             if (res.dir != Direction.NONE)
             {

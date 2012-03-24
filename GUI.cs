@@ -75,6 +75,8 @@ namespace XNAForms
         public static void Initialize(Game game)
         {
             GUI.game = game;
+            Scrollbar.HScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.VERTICAL);
+            Scrollbar.VScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.HORIZONTAL);
             Form.tbTex = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(34, 34, 34), 0), new GradientPoint(new Color(17, 17, 17), 28) }, Orientation.VERTICAL);
             GUIHelper.wTex = new Texture2D(game.GraphicsDevice, 1, 1);
             GUIHelper.wTex.SetData<Color>(new[] { Color.White });

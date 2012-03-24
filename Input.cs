@@ -24,6 +24,13 @@ namespace XNAForms
         }
         private static MouseState LastM;
         private static MouseState M;
+        internal static int mDS
+        {
+            get
+            {
+                return M.ScrollWheelValue - LastM.ScrollWheelValue;
+            }
+        }
         internal static int mDX
         {
             get
