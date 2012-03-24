@@ -24,22 +24,22 @@ namespace XNAForms.Forms
                 case Placement.TOP:
                     scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
                     scrollbar.positionFunction = (o, e) => this.position;
-                    scrollbar.sizeFunction = (o, e) => new Size(size.width, ((Control)o).size.height);
+                    scrollbar.sizeFunction = (o, e) => new Size(this.size.width, ((Control)o).size.height);
                     break;
                 case Placement.RIGHT:
                     scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
-                    scrollbar.positionFunction = (o, e) => this.position + new Position(size.width - 15, 0);
-                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, size.height);
+                    scrollbar.positionFunction = (o, e) => this.position + new Position(this.size.width - 15, 0);
+                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, this.size.height);
                     break;
                 case Placement.BOTTOM:
                     scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
-                    scrollbar.positionFunction = (o, e) => this.position + new Position(0, size.height - 15);
-                    scrollbar.sizeFunction = (o, e) => new Size(size.width, ((Control)o).size.height);
+                    scrollbar.positionFunction = (o, e) => this.position + new Position(0, this.size.height - 15);
+                    scrollbar.sizeFunction = (o, e) => new Size(this.size.width, ((Control)o).size.height);
                     break;
                 default:
                     scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
                     scrollbar.positionFunction = (o, e) => this.position;
-                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, size.height);
+                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, this.size.height);
                     break;
             }
             scrollbar.totalFunction = (o, e) => texts.Count;
@@ -49,7 +49,7 @@ namespace XNAForms.Forms
                     for (int i = 0; i < texts.Count; i++)
                     {
                         y += (int)GUIHelper.StrSize(texts[i].text).Y;
-                        if (y > size.height)
+                        if (y > this.size.height)
                         {
                             return i;
                         }

@@ -78,7 +78,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                return (int)GUIHelper.font.MeasureString(text).Y + 8;
+                return (int)GUIHelper.font.MeasureString(text).Y + 12;
             }
         }
 
@@ -99,7 +99,7 @@ namespace XNAForms.Forms
             Rectangle titlebar = new Rectangle(position.X, position.Y - tBarHeight, size.width, tBarHeight);
             GUIHelper.sb.Draw(tbTex, titlebar, new Color(255, 255, 255, alpha));
             GUIHelper.OutlineRect(titlebar, new Color(0, 0, 0, alpha));
-            GUIHelper.DrawStr(text, position + new Position(6, -tBarHeight + 4), new Color(255, 255, 255, alpha));
+            GUIHelper.DrawStr(text, position + new Position(6, -tBarHeight + 6), new Color(255, 255, 255, alpha));
             Rectangle window = new Rectangle(position.X, position.Y, size.width, size.height);
             GUIHelper.FillRect(window, new Color(17, 17, 17, alpha));
             GUIHelper.OutlineRect(window, new Color(0, 0, 0, alpha));
