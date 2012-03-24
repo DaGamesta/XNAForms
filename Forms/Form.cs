@@ -1,0 +1,274 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace XNAForms.Forms
+{
+    /// <summary>
+    /// Represents the method(s) that handle various form events.
+    /// </summary>
+    public delegate void FormEventHandler(object sender, EventArgs e);
+    /// <summary>
+    /// Represents a window, which make up the core of the graphical user interface.
+    /// </summary>
+    public class Form : Panel
+    {
+        internal static Texture2D tbTex;
+
+        /// <summary>
+        /// Whether or not the form can be resized.
+        /// </summary>
+        protected bool canResize;
+        internal int index;
+        /// <summary>
+        /// Gets if the form is active.
+        /// </summary>
+        public bool isActive
+        {
+            get
+            {
+                return GUI.formOrder[GUI.formOrder.Count - 1] == index;
+            }
+        }
+        /// <summary>
+        /// The minimum size of the form.
+        /// </summary>
+        protected Size minSize;
+        private bool moving;
+        /// <summary>
+        /// Fires when the form is drawn.
+        /// </summary>
+        protected event FormEventHandler onDraw;
+        /// <summary>
+        /// Fires when the form is updated.
+        /// </summary>
+        protected event FormEventHandler onUpdate;
+        /// <summary>
+        /// Gets the bounding rectangle of the entire form, including the titlebar.
+        /// </summary>
+        public sealed override Rectangle rectangle
+        {
+            get
+            {
+                return new Rectangle(position.X, position.Y - 28, size.width, size.height + 28);
+            }
+        }
+        private ResizeInfo res;
+        internal bool runClicks
+        {
+            get
+            {
+                foreach (Form f in GUI.forms)
+                {
+                    if (f != this)
+                    {
+                        if (rectangle.IntersectsMouse() && f.rectangle.IntersectsMouse() && GUI.formOrder.IndexOf(index) < GUI.formOrder.IndexOf(f.index))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new form.
+        /// </summary>
+        /// <param name="position">Position for the new form.</param>
+        /// <param name="size">Size for the new form.</param>
+        /// <param name="title">Titlebar text for the new form.</param>
+        public Form(Position position, Size size, string title)
+            : base(position, size)
+        {
+            text = title;
+        }
+
+        internal override void Draw()
+        {
+            int y = (int)GUIHelper.font.MeasureString(text).Y;
+            Rectangle titlebar = new Rectangle(position.X, position.Y - 28, size.width, 28);
+            GUIHelper.sb.Draw(tbTex, titlebar, new Color(255, 255, 255, alpha));
+            GUIHelper.OutlineRect(titlebar, new Color(0, 0, 0, alpha));
+            GUIHelper.DrawStr(text, position + new Position((int)(titlebar.Height - y) / 2, -20), new Color(255, 255, 255, alpha));
+            Rectangle window = new Rectangle(position.X, position.Y, size.width, size.height);
+            GUIHelper.FillRect(window, new Color(17, 17, 17, alpha));
+            GUIHelper.OutlineRect(window, new Color(0, 0, 0, alpha));
+            foreach (Control c in controls)
+            {
+                c.alpha = alpha;
+            }
+            if (onDraw != null)
+            {
+                onDraw.Invoke(this, new EventArgs());
+            }
+            base.Draw();
+        }
+        internal override void Update()
+        {
+            Rectangle titlebar = new Rectangle(position.X, position.Y - 28, size.width, 28);
+            if (!Input.LeftD)
+            {
+                moving = false;
+                res.dir = Direction.NONE;
+            }
+            bool maybeLeftResize = new Rectangle(position.X, position.Y - 28, 6, size.height + 28).IntersectsMouse() || (res.dir & Direction.LEFT) != 0;
+            bool maybeRightResize = new Rectangle(position.X + size.width - 6, position.Y - 28, 6, size.height + 28).IntersectsMouse() || (res.dir & Direction.RIGHT) != 0;
+            bool maybeTopResize = new Rectangle(position.X, position.Y - 28, size.width, 6).IntersectsMouse() || (res.dir & Direction.UP) != 0;
+            bool maybeBottomResize = new Rectangle(position.X, position.Y + size.height - 6, size.width, 6).IntersectsMouse() || (res.dir & Direction.DOWN) != 0;
+            if (res.dir != Direction.NONE)
+            {
+                maybeLeftResize = (res.dir & Direction.LEFT) != 0;
+                maybeRightResize = (res.dir & Direction.RIGHT) != 0;
+                maybeTopResize = (res.dir & Direction.UP) != 0;
+                maybeBottomResize = (res.dir & Direction.DOWN) != 0;
+            }
+            if (moving || !canResize)
+            {
+                maybeLeftResize = maybeRightResize = maybeTopResize = maybeBottomResize = false;
+            }
+            if (runClicks)
+            {
+                if (maybeLeftResize)
+                {
+                    GUI.SetCursor(CursorType.RESIZE_HORIZONTAL);
+                    if (Input.LeftC)
+                    {
+                        res.pt.X = Input.mX - position.X;
+                        res.dir |= Direction.LEFT;
+                    }
+                }
+                if (maybeRightResize)
+                {
+                    GUI.SetCursor(CursorType.RESIZE_HORIZONTAL);
+                    if (Input.LeftC)
+                    {
+                        res.pt.X = Input.mX - size.width - position.X;
+                        res.dir |= Direction.RIGHT;
+                    }
+                }
+                if (maybeTopResize)
+                {
+                    GUI.SetCursor((maybeRightResize || maybeLeftResize) ? CursorType.RESIZE_DIAGONAL : CursorType.RESIZE_VERTICAL);
+                    if (maybeRightResize)
+                    {
+                        GUI.FlipCursor(true);
+                    }
+                    if (Input.LeftC)
+                    {
+                        res.pt.Y = Input.mY - position.Y;
+                        res.dir |= Direction.UP;
+                    }
+                }
+                if (maybeBottomResize)
+                {
+                    GUI.SetCursor((maybeRightResize || maybeLeftResize) ? CursorType.RESIZE_DIAGONAL : CursorType.RESIZE_VERTICAL);
+                    if (maybeLeftResize)
+                    {
+                        GUI.FlipCursor(true);
+                    }
+                    if (Input.LeftC)
+                    {
+                        res.pt.Y = Input.mY - size.height - position.Y;
+                        res.dir |= Direction.DOWN;
+                    }
+                }
+                if (Input.LeftC)
+                {
+                    if (titlebar.IntersectsMouse() && res.dir == Direction.NONE)
+                    {
+                        moving = true;
+                    }
+                }
+            }
+            if (moving)
+            {
+                position = new Position(position.X + Input.mDX, position.Y + Input.mDY);
+            }
+            if ((res.dir & Direction.LEFT) != 0)
+            {
+                if (size.width - Input.mDX < minSize.width)
+                {
+                    res.mOff |= Direction.LEFT;
+                    position = new Position(position.X + size.width - minSize.width, position.Y);
+                    size = new Size(minSize.width, size.height);
+                }
+                if ((res.mOff & Direction.LEFT) == 0)
+                {
+                    size = new Size(size.width - Input.mDX, size.height);
+                    position = new Position(position.X + Input.mDX, position.Y);
+                }
+                if (Input.mX - position.X < res.pt.X && (res.mOff & Direction.LEFT) != 0)
+                {
+                    res.mOff &= ~Direction.LEFT;
+                    int disp = res.pt.X - Input.mX + position.X;
+                    position = new Position(position.X - disp, position.Y);
+                    size = new Size(size.width + disp, size.height);
+                }
+            }
+            if ((res.dir & Direction.RIGHT) != 0)
+            {
+                if (size.width + Input.mDX < minSize.width)
+                {
+                    res.mOff |= Direction.RIGHT;
+                    size = new Size(minSize.width, size.height);
+                }
+                if ((res.mOff & Direction.RIGHT) == 0)
+                {
+                    size = new Size(size.width + Input.mDX, size.height);
+                }
+                if (Input.mX - size.width - position.X > res.pt.X && (res.mOff & Direction.RIGHT) != 0)
+                {
+                    res.mOff &= ~Direction.RIGHT;
+                    size = new Size(Input.mX - position.X - res.pt.X, size.height);
+                }
+            }
+            if ((res.dir & Direction.UP) != 0)
+            {
+                if (size.height - Input.mDY < minSize.height)
+                {
+                    res.mOff |= Direction.UP;
+                    position = new Position(position.X, position.Y + size.height - minSize.height);
+                    size = new Size(size.width, minSize.height);
+                }
+                if ((res.mOff & Direction.UP) == 0)
+                {
+                    size = new Size(size.width, size.height - Input.mDY);
+                    position = new Position(position.X, position.Y + Input.mDY);
+                }
+                if (Input.mY - position.Y < res.pt.Y && (res.mOff & Direction.UP) != 0)
+                {
+                    res.mOff &= ~Direction.UP;
+                    int disp = res.pt.Y - Input.mY + position.Y;
+                    position = new Position(position.X, position.Y - disp);
+                    size = new Size(size.width, size.height + disp);
+                }
+            }
+            if ((res.dir & Direction.DOWN) != 0)
+            {
+                if (size.height + Input.mDY < minSize.height)
+                {
+                    res.mOff |= Direction.DOWN;
+                    size = new Size(size.width, minSize.height);
+                }
+                if ((res.mOff & Direction.DOWN) == 0)
+                {
+                    size = new Size(size.width, size.height + Input.mDY);
+                }
+                if (Input.mY - size.height - position.Y > res.pt.Y && (res.mOff & Direction.DOWN) != 0)
+                {
+                    res.mOff &= ~Direction.DOWN;
+                    size = new Size(size.width, Input.mY - position.Y - res.pt.Y);
+                }
+            }
+            if (onUpdate != null)
+            {
+                onUpdate.Invoke(this, new EventArgs());
+            }
+            base.Update();
+        }
+    }
+}
