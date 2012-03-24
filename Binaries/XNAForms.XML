@@ -174,6 +174,11 @@
             The controls that the panel encapsulates.
             </summary>
         </member>
+        <member name="F:XNAForms.Forms.Panel.scrollbars">
+            <summary>
+            The scrollbars that the panel holds.
+            </summary>
+        </member>
         <member name="M:XNAForms.Forms.Panel.#ctor(XNAForms.Position,XNAForms.Size,XNAForms.Forms.Control[])">
             <summary>
             Creates a new panel.
@@ -187,6 +192,14 @@
             Adds a control.
             </summary>
             <param name="c">Control to add.</param>
+        </member>
+        <member name="M:XNAForms.Forms.Panel.AddScrollbar(XNAForms.Forms.Placement,System.Func{System.Int32},System.Func{System.Int32})">
+            <summary>
+            Adds a scrollbar.
+            </summary>
+            <param name="placement">Scrollbar placement.</param>
+            <param name="t">Total function for scrollbar.</param>
+            <param name="v">Viewable function for scrollbar.</param>
         </member>
         <member name="T:XNAForms.Size">
             <summary>
@@ -242,13 +255,12 @@
             Represents a text area.
             </summary>
         </member>
-        <member name="M:XNAForms.Forms.TextArea.#ctor(XNAForms.Position,XNAForms.Size,XNAForms.Forms.Placement)">
+        <member name="M:XNAForms.Forms.TextArea.#ctor(XNAForms.Position,XNAForms.Size)">
             <summary>
             Creates a new textarea.
             </summary>
             <param name="position">Position of the new textarea.</param>
             <param name="size">Size of the new textarea.</param>
-            <param name="scrollbarPlacement">Placement of the new textarea's scrollbar.</param>
         </member>
         <member name="M:XNAForms.Forms.TextArea.AddText(XNAForms.Forms.Text)">
             <summary>
@@ -422,7 +434,7 @@
         </member>
         <member name="F:XNAForms.Forms.Scrollbar.viewableFunction">
             <summary>
-            Fires when the Scrollbar requests for the number of viewable items.
+            The function that gets the amount of viewable items.
             </summary>
         </member>
         <member name="M:XNAForms.Forms.Scrollbar.#ctor(XNAForms.Position,System.Int32,XNAForms.Orientation)">
@@ -465,17 +477,12 @@
         </member>
         <member name="P:XNAForms.Forms.Scrollbar.viewable">
             <summary>
-            The function that gets the amount of viewable items.
+            Gets the viewable amount of items.
             </summary>
         </member>
         <member name="T:XNAForms.Forms.ControlEventHandler">
             <summary>
             Represents the method(s) that handle various control events.
-            </summary>
-        </member>
-        <member name="T:XNAForms.Forms.FuncHandler`1">
-            <summary>
-            Represents the method that returns the given type.
             </summary>
         </member>
     </members>

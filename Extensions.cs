@@ -11,7 +11,7 @@ namespace XNAForms
         internal static int Clamp(this int i, int l, int u)
         {
             i = i >= l ? i : l;
-            i = i <= u ? i : l;
+            i = i <= u ? i : u;
             return i;
         }
         internal static bool IntersectsMouse(this Rectangle r)

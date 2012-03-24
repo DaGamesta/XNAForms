@@ -66,13 +66,13 @@ namespace XNAForms.Forms
         {
             get
             {
-                return totalFunction(this, new EventArgs());
+                return totalFunction();
             }
         }
         /// <summary>
         /// The function that gets the amount of total items.
         /// </summary>
-        public FuncHandler<int> totalFunction;
+        public Func<int> totalFunction;
         /// <summary>
         /// Gets the value of the scrollbar.
         /// </summary>
@@ -88,19 +88,19 @@ namespace XNAForms.Forms
             }
         }
         /// <summary>
-        /// The function that gets the amount of viewable items.
+        /// Gets the viewable amount of items.
         /// </summary>
         public int viewable
         {
             get
             {
-                return viewableFunction(this, new EventArgs());
+                return viewableFunction();
             }
         }
         /// <summary>
-        /// Fires when the Scrollbar requests for the number of viewable items.
+        /// The function that gets the amount of viewable items.
         /// </summary>
-        public FuncHandler<int> viewableFunction;
+        public Func<int> viewableFunction;
         /// <summary>
         /// Creates a new Scrollbar.
         /// </summary>
@@ -134,6 +134,7 @@ namespace XNAForms.Forms
             if (!Input.LeftD)
             {
                 movInfo.dir = Orientation.NONE;
+                movInfo.mOff = Direction.NONE;
             }
             int dist = size - sSize - scrollbarPosition;
             Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + dist, 15, sSize) : new Rectangle(position.X + dist, position.Y, sSize, 15);
@@ -167,6 +168,31 @@ namespace XNAForms.Forms
                     if (Input.mY < movInfo.pt.Y + scrollbar.Y && (movInfo.mOff & Direction.DOWN) != 0)
                     {
                         movInfo.mOff &= ~Direction.DOWN;
+                    }
+                }
+                else
+                {
+                    if (scrollbarPosition - Input.mDX > size - sSize)
+                    {
+                        movInfo.mOff |= Direction.LEFT;
+                        scrollbarPosition = size - sSize;
+                    }
+                    if (scrollbarPosition - Input.mDX < 0)
+                    {
+                        movInfo.mOff |= Direction.RIGHT;
+                        scrollbarPosition = 0;
+                    }
+                    if ((movInfo.mOff & (Direction.LEFT | Direction.RIGHT)) == 0)
+                    {
+                        scrollbarPosition -= Input.mDX;
+                    }
+                    if (Input.mX > movInfo.pt.X + scrollbar.X && (movInfo.mOff & Direction.LEFT) != 0)
+                    {
+                        movInfo.mOff &= ~Direction.LEFT;
+                    }
+                    if (Input.mX < movInfo.pt.X + scrollbar.X && (movInfo.mOff & Direction.RIGHT) != 0)
+                    {
+                        movInfo.mOff &= ~Direction.RIGHT;
                     }
                 }
             }

@@ -120,6 +120,7 @@ namespace XNAForms.Forms
             {
                 moving = false;
                 res.dir = Direction.NONE;
+                res.mOff = Direction.NONE;
             }
             bool maybeLeftResize = new Rectangle(position.X, position.Y - tBarHeight, 6, size.height + tBarHeight).IntersectsMouse() || (res.dir & Direction.LEFT) != 0;
             bool maybeRightResize = new Rectangle(position.X + size.width - 6, position.Y - tBarHeight, 6, size.height + tBarHeight).IntersectsMouse() || (res.dir & Direction.RIGHT) != 0;
@@ -192,27 +193,28 @@ namespace XNAForms.Forms
             }
             if (moving)
             {
-                position = new Position(position.X + Input.mDX, position.Y + Input.mDY);
+                position.X += Input.mDX;
+                position.Y += Input.mDY;
             }
             if ((res.dir & Direction.LEFT) != 0)
             {
                 if (size.width - Input.mDX < minSize.width)
                 {
                     res.mOff |= Direction.LEFT;
-                    position = new Position(position.X + size.width - minSize.width, position.Y);
-                    size = new Size(minSize.width, size.height);
+                    position.X += size.width - minSize.width;
+                    size.width = minSize.width;
                 }
                 if ((res.mOff & Direction.LEFT) == 0)
                 {
-                    size = new Size(size.width - Input.mDX, size.height);
-                    position = new Position(position.X + Input.mDX, position.Y);
+                    size.width -= Input.mDX;
+                    position.X += Input.mDX;
                 }
                 if (Input.mX - position.X < res.pt.X && (res.mOff & Direction.LEFT) != 0)
                 {
                     res.mOff &= ~Direction.LEFT;
                     int disp = res.pt.X - Input.mX + position.X;
-                    position = new Position(position.X - disp, position.Y);
-                    size = new Size(size.width + disp, size.height);
+                    position.X -= disp;
+                    size.width += disp;
                 }
             }
             if ((res.dir & Direction.RIGHT) != 0)
@@ -220,16 +222,16 @@ namespace XNAForms.Forms
                 if (size.width + Input.mDX < minSize.width)
                 {
                     res.mOff |= Direction.RIGHT;
-                    size = new Size(minSize.width, size.height);
+                    size.width = minSize.width;
                 }
                 if ((res.mOff & Direction.RIGHT) == 0)
                 {
-                    size = new Size(size.width + Input.mDX, size.height);
+                    size.width += Input.mDX;
                 }
                 if (Input.mX - size.width - position.X > res.pt.X && (res.mOff & Direction.RIGHT) != 0)
                 {
                     res.mOff &= ~Direction.RIGHT;
-                    size = new Size(Input.mX - position.X - res.pt.X, size.height);
+                    size.width = Input.mX - position.X - res.pt.X;
                 }
             }
             if ((res.dir & Direction.UP) != 0)
@@ -237,20 +239,20 @@ namespace XNAForms.Forms
                 if (size.height - Input.mDY < minSize.height)
                 {
                     res.mOff |= Direction.UP;
-                    position = new Position(position.X, position.Y + size.height - minSize.height);
-                    size = new Size(size.width, minSize.height);
+                    position.Y += size.height - minSize.height;
+                    size.height = minSize.height;
                 }
                 if ((res.mOff & Direction.UP) == 0)
                 {
-                    size = new Size(size.width, size.height - Input.mDY);
-                    position = new Position(position.X, position.Y + Input.mDY);
+                    size.height -= Input.mDY;
+                    position.Y += Input.mDY;
                 }
                 if (Input.mY - position.Y < res.pt.Y && (res.mOff & Direction.UP) != 0)
                 {
                     res.mOff &= ~Direction.UP;
                     int disp = res.pt.Y - Input.mY + position.Y;
-                    position = new Position(position.X, position.Y - disp);
-                    size = new Size(size.width, size.height + disp);
+                    position.Y -= disp;
+                    size.height += disp;
                 }
             }
             if ((res.dir & Direction.DOWN) != 0)
@@ -258,16 +260,16 @@ namespace XNAForms.Forms
                 if (size.height + Input.mDY < minSize.height)
                 {
                     res.mOff |= Direction.DOWN;
-                    size = new Size(size.width, minSize.height);
+                    size.height = minSize.height;
                 }
                 if ((res.mOff & Direction.DOWN) == 0)
                 {
-                    size = new Size(size.width, size.height + Input.mDY);
+                    size.height += Input.mDY;
                 }
                 if (Input.mY - size.height - position.Y > res.pt.Y && (res.mOff & Direction.DOWN) != 0)
                 {
                     res.mOff &= ~Direction.DOWN;
-                    size = new Size(size.width, Input.mY - position.Y - res.pt.Y);
+                    size.height = Input.mY - position.Y - res.pt.Y;
                 }
             }
             if (onUpdate != null)

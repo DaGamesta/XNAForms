@@ -13,7 +13,11 @@ namespace XNAForms.Forms
         /// <summary>
         /// The controls that the panel encapsulates.
         /// </summary>
-        protected List<Control> controls = new List<Control>();
+        protected internal List<Control> controls = new List<Control>();
+        /// <summary>
+        /// The scrollbars that the panel holds.
+        /// </summary>
+        protected internal List<Scrollbar> scrollbars = new List<Scrollbar>();
 
         /// <summary>
         /// Creates a new panel.
@@ -36,6 +40,42 @@ namespace XNAForms.Forms
         protected void Add(Control c)
         {
             controls.Add(c);
+        }
+        /// <summary>
+        /// Adds a scrollbar.
+        /// </summary>
+        /// <param name="placement">Scrollbar placement.</param>
+        /// <param name="t">Total function for scrollbar.</param>
+        /// <param name="v">Viewable function for scrollbar.</param>
+        protected void AddScrollbar(Placement placement, Func<int> t, Func<int> v)
+        {
+            Scrollbar scrollbar;
+            switch (placement)
+            {
+                case Placement.TOP:
+                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
+                    scrollbar.positionFunction = () => this.position;
+                    scrollbar.sizeFunction = () => new Size(this.size.width, 15);
+                    break;
+                case Placement.RIGHT:
+                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
+                    scrollbar.positionFunction = () => this.position + new Position(this.size.width - 15, 0);
+                    scrollbar.sizeFunction = () => new Size(15, this.size.height);
+                    break;
+                case Placement.BOTTOM:
+                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
+                    scrollbar.positionFunction = () => this.position + new Position(0, this.size.height - 15);
+                    scrollbar.sizeFunction = () => new Size(this.size.width, 15);
+                    break;
+                default:
+                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
+                    scrollbar.positionFunction = () => this.position;
+                    scrollbar.sizeFunction = () => new Size(15, this.size.height);
+                    break;
+            }
+            scrollbar.totalFunction = t;
+            scrollbar.viewableFunction = v;
+            scrollbars.Add(scrollbar);
         }
         internal override void Draw()
         {

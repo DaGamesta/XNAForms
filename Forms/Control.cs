@@ -11,10 +11,6 @@ namespace XNAForms.Forms
     /// </summary>
     public delegate void ControlEventHandler(object sender, EventArgs e);
     /// <summary>
-    /// Represents the method that returns the given type.
-    /// </summary>
-    public delegate T FuncHandler<T>(object sender, EventArgs e);
-    /// <summary>
     /// Represents a visible object on a form.
     /// </summary>
     public abstract class Control
@@ -32,7 +28,7 @@ namespace XNAForms.Forms
         /// <summary>
         /// The function that returns the position of the control.
         /// </summary>
-        public FuncHandler<Position> positionFunction;
+        public Func<Position> positionFunction;
         /// <summary>
         /// Gets the bounding rectangle of the control.
         /// </summary>
@@ -50,7 +46,7 @@ namespace XNAForms.Forms
         /// <summary>
         /// The function that returns the size of the control.
         /// </summary>
-        public FuncHandler<Size> sizeFunction;
+        public Func<Size> sizeFunction;
         /// <summary>
         /// Additional text used by the control.
         /// </summary>
@@ -64,7 +60,7 @@ namespace XNAForms.Forms
         }
 
         internal abstract void Draw();
-        internal void Reposition(Panel owner)
+        internal virtual void Reposition(Panel owner)
         {
             bool left = (dockStyle & DockStyle.LEFT) != 0;
             bool top = (dockStyle & DockStyle.TOP) != 0;
@@ -92,7 +88,7 @@ namespace XNAForms.Forms
             }
             else
             {
-                size = sizeFunction(this, new EventArgs());
+                size = sizeFunction();
             }
             if (positionFunction == null)
             {
@@ -115,7 +111,7 @@ namespace XNAForms.Forms
             }
             else
             {
-                position = positionFunction(this, new EventArgs());
+                position = positionFunction();
             }
         }
         internal abstract void Update();

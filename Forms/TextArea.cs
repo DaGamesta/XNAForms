@@ -8,42 +8,23 @@ namespace XNAForms.Forms
     /// </summary>
     public sealed class TextArea : Panel
     {
-        private Scrollbar scrollbar;
+        private Scrollbar scrollbar
+        {
+            get
+            {
+                return scrollbars[0];
+            }
+        }
         private List<Text> texts = new List<Text>(1000);
         /// <summary>
         /// Creates a new textarea.
         /// </summary>
         /// <param name="position">Position of the new textarea.</param>
         /// <param name="size">Size of the new textarea.</param>
-        /// <param name="scrollbarPlacement">Placement of the new textarea's scrollbar.</param>
-        public TextArea(Position position, Size size, Placement scrollbarPlacement)
+        public TextArea(Position position, Size size)
             : base(position, size)
         {
-            switch (scrollbarPlacement)
-            {
-                case Placement.TOP:
-                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
-                    scrollbar.positionFunction = (o, e) => this.position;
-                    scrollbar.sizeFunction = (o, e) => new Size(this.size.width, ((Control)o).size.height);
-                    break;
-                case Placement.RIGHT:
-                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
-                    scrollbar.positionFunction = (o, e) => this.position + new Position(this.size.width - 15, 0);
-                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, this.size.height);
-                    break;
-                case Placement.BOTTOM:
-                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
-                    scrollbar.positionFunction = (o, e) => this.position + new Position(0, this.size.height - 15);
-                    scrollbar.sizeFunction = (o, e) => new Size(this.size.width, ((Control)o).size.height);
-                    break;
-                default:
-                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
-                    scrollbar.positionFunction = (o, e) => this.position;
-                    scrollbar.sizeFunction = (o, e) => new Size(((Control)o).size.width, this.size.height);
-                    break;
-            }
-            scrollbar.totalFunction = (o, e) => texts.Count;
-            scrollbar.viewableFunction = (o, e) =>
+            AddScrollbar(Placement.RIGHT, () => texts.Count, () =>
                 {
                     int y = 0;
                     for (int i = 0; i < texts.Count; i++)
@@ -55,7 +36,7 @@ namespace XNAForms.Forms
                         }
                     }
                     return scrollbar.total + 1;
-                };
+                });
         }
         /// <summary>
         /// Adds text to the textarea.
