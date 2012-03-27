@@ -23,6 +23,7 @@ namespace XNAForms.Forms
         /// Fires when the textbox is active and the enter key is pressed.
         /// </summary>
         public event ControlEventHandler onEnter;
+        private byte timer;
         private int vIndex;
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace XNAForms.Forms
             GUIHelper.FillRect(rectangle, new Color(26, 26, 26, alpha));
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
             GUIHelper.DrawStr(text.Substring(vIndex, letters), position + new Position(4, 2), new Color(255, 255, 255, alpha));
-            if (active)
+            if (active && timer < 30)
             {
                 int x = (int)GUIHelper.StrSize(text.Substring(vIndex, cIndex)).X + 5;
                 GUIHelper.DrawLn(new Position(position.X + x, position.Y + 2), new Position(position.X + x, position.Y + size.height - 2), new Color(255, 255, 255, alpha));
@@ -72,11 +73,18 @@ namespace XNAForms.Forms
             }
             if (active)
             {
+                timer++;
+                timer %= 60;
                 string next = Input.NextStr();
                 text = text.Substring(0, cIndex + vIndex) + next + text.Substring(cIndex + vIndex);
                 cIndex += next.Length;
+                if (next != "")
+                {
+                    timer = 0;
+                }
                 if (Input.TypeKey(Keys.Back) && cIndex + vIndex != 0)
                 {
+                    timer = 0;
                     text = text.Remove(cIndex + vIndex - 1, 1);
                     if (vIndex == 0)
                     {
@@ -89,14 +97,17 @@ namespace XNAForms.Forms
                 }
                 if (Input.TypeKey(Keys.Delete) && text.Length > 0 && cIndex + vIndex < text.Length)
                 {
+                    timer = 0;
                     text = text.Remove(cIndex + vIndex, 1);
                 }
                 if (Input.TypeKey(Keys.Left))
                 {
+                    timer = 0;
                     cIndex--;
                 }
                 else if (Input.TypeKey(Keys.Right))
                 {
+                    timer = 0;
                     cIndex++;
                 }
                 if (Input.TappedKey(Keys.Enter) && onEnter != null)
@@ -105,7 +116,7 @@ namespace XNAForms.Forms
                 }
             }
             letters = 0;
-            while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X < size.width - 4 && letters < text.Length)
+            while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X + 4 < size.width - 4 && letters < text.Length)
             {
                 letters++;
             }
