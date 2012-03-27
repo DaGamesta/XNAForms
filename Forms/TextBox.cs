@@ -116,22 +116,16 @@ namespace XNAForms.Forms
                 }
             }
             letters = 0;
-            try
+            while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X + 4 < size.width - 4 && letters < text.Length - vIndex)
             {
-                while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X + 4 < size.width - 4 && letters < text.Length)
-                {
-                    letters++;
-                }
-            }
-            catch
-            {
+                letters++;
             }
             if (cIndex < 0)
             {
                 vIndex += cIndex;
                 cIndex = 0;
             }
-            if (cIndex >= letters)
+            if (cIndex > letters)
             {
                 vIndex += cIndex - letters;
                 cIndex = letters;
