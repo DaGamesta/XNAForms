@@ -90,16 +90,12 @@ namespace XNAForms.Forms
                 if (Input.TypeKey(Keys.Delete) && text.Length > 0 && cIndex + vIndex < text.Length)
                 {
                     text = text.Remove(cIndex + vIndex, 1);
-                    if (vIndex != 0)
-                    {
-                        cIndex++;
-                    }
                 }
                 if (Input.TypeKey(Keys.Left))
                 {
                     cIndex--;
                 }
-                if (Input.TypeKey(Keys.Right))
+                else if (Input.TypeKey(Keys.Right))
                 {
                     cIndex++;
                 }
