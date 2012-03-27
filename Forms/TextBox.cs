@@ -61,7 +61,7 @@ namespace XNAForms.Forms
                 if (active)
                 {
                     cIndex = 0;
-                    while ((int)GUIHelper.StrSize(text.Substring(vIndex, cIndex)).X + 4 < Input.mX - position.X && cIndex < text.Length - vIndex)
+                    while ((int)GUIHelper.StrSize(text.Substring(vIndex, cIndex)).X + 4 < Input.mX - position.X - 4 && cIndex < text.Length - vIndex)
                     {
                         cIndex++;
                     }
@@ -116,9 +116,15 @@ namespace XNAForms.Forms
                 }
             }
             letters = 0;
-            while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X + 4 < size.width - 4 && letters < text.Length)
+            try
             {
-                letters++;
+                while ((int)GUIHelper.StrSize(text.Substring(vIndex, letters)).X + 4 < size.width - 4 && letters < text.Length)
+                {
+                    letters++;
+                }
+            }
+            catch
+            {
             }
             if (cIndex < 0)
             {
