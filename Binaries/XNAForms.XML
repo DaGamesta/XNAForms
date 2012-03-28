@@ -342,7 +342,7 @@
         </member>
         <member name="M:XNAForms.GUI.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
             <summary>
-            Draws the GUI.
+            Draws the GUI. This should be called after ending the spritebatch drawing.
             </summary>
             <param name="sb">Spritebatch that should be used to draw.</param>
         </member>
@@ -374,6 +374,29 @@
             <param name="position">Position of the new text.</param>
             <param name="color">Color of the new text.</param>
             <param name="str">String of the new text.</param>
+        </member>
+        <member name="T:XNAForms.Forms.TextBox">
+            <summary>
+            Represents a textbox in where text may be typed into it.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.TextBox.#ctor(XNAForms.Position,System.Int32,System.String)">
+            <summary>
+            Creates a new textbox.
+            </summary>
+            <param name="position">Position for the new textbox.</param>
+            <param name="size">Size for the new textbox.</param>
+            <param name="def">Default string for the new textbox.</param>
+        </member>
+        <member name="E:XNAForms.Forms.TextBox.onActivate">
+            <summary>
+            Fires when the textbox is activated.
+            </summary>
+        </member>
+        <member name="E:XNAForms.Forms.TextBox.onEnter">
+            <summary>
+            Fires when the textbox is active and the enter key is pressed.
+            </summary>
         </member>
         <member name="T:XNAForms.Position">
             <summary>
@@ -483,29 +506,6 @@
         <member name="T:XNAForms.Forms.ControlEventHandler">
             <summary>
             Represents the method(s) that handle various control events.
-            </summary>
-        </member>
-        <member name="T:XNAForms.Forms.TextBox">
-            <summary>
-            Represents a textbox in where text may be typed into it.
-            </summary>
-        </member>
-        <member name="M:XNAForms.Forms.TextBox.#ctor(XNAForms.Position,System.Int32,System.String)">
-            <summary>
-            Creates a new textbox.
-            </summary>
-            <param name="position">Position for the new textbox.</param>
-            <param name="size">Size for the new textbox.</param>
-            <param name="def">Default string for the new textbox.</param>
-        </member>
-        <member name="E:XNAForms.Forms.TextBox.onActivate">
-            <summary>
-            Fires when the textbox is activated.
-            </summary>
-        </member>
-        <member name="E:XNAForms.Forms.TextBox.onEnter">
-            <summary>
-            Fires when the textbox is active and the enter key is pressed.
             </summary>
         </member>
     </members>

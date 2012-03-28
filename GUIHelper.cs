@@ -72,9 +72,20 @@ namespace XNAForms
             DrawLn(new Position(r1.X + r1.Width, r1.Y + r1.Height), new Position(r1.X, r1.Y + r1.Height), c);
             DrawLn(new Position(r1.X, r1.Y + r1.Height), new Position(r1.X, r1.Y), c);
         }
+        internal static void Scissor(Rectangle r)
+        {
+            sb.End();
+            sb.Begin(SpriteSortMode.Deferred, null, null, null, new RasterizerState() { ScissorTestEnable = true });
+            sb.GraphicsDevice.ScissorRectangle = r;
+        }
         internal static Vector2 StrSize(string str)
         {
             return font.MeasureString(str);
+        }
+        internal static void Unscissor()
+        {
+            sb.End();
+            sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
         }
     }
 }

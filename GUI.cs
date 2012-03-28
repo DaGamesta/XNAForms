@@ -51,18 +51,20 @@ namespace XNAForms
             GUIHelper.font = font;
         }
         /// <summary>
-        /// Draws the GUI.
+        /// Draws the GUI. This should be called after ending the spritebatch drawing.
         /// </summary>
         /// <param name="sb">Spritebatch that should be used to draw.</param>
         public static void Draw(SpriteBatch sb)
         {
             GUIHelper.sb = sb;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             foreach (int i in formOrder)
             {
                 forms[i].Draw();
             }
             cursor.Draw();
             cursor = new Cursor(CursorType.NORMAL);
+            sb.End();
         }
         internal static void FlipCursor(bool horizontal)
         {
