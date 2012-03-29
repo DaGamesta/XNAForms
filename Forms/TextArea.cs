@@ -30,7 +30,7 @@ namespace XNAForms.Forms
                     for (int i = 0; i < texts.Count; i++)
                     {
                         y += (int)GUIHelper.StrSize(texts[i].text).Y;
-                        if (y > this.size.height)
+                        if (y > this.size.height - 1)
                         {
                             return i;
                         }
@@ -50,12 +50,12 @@ namespace XNAForms.Forms
         {
             scrollbar.Draw();
             int value = (int)scrollbar.value;
-            int y = 0;
+            int y = 1;
             for (int i = value; i < value + scrollbar.viewable; i++)
             {
                 if (i >= 0 && i < texts.Count)
                 {
-                    GUIHelper.DrawStr(texts[i].text, position + new Position(0, y), texts[i].color);
+                    GUIHelper.DrawStr(texts[i].text, position + new Position(4, y), texts[i].color);
                     y += (int)GUIHelper.StrSize(texts[i].text).Y;
                 }
             }
@@ -71,7 +71,7 @@ namespace XNAForms.Forms
                 string[] strArr = str.Split(' ');
                 foreach (string word in strArr)
                 {
-                    if (GUIHelper.StrSize(currLine + word).X >= size.width - 21)
+                    if (GUIHelper.StrSize(currLine + word).X >= size.width - 25)
                     {
                         texts.Add(new Text(position, ((Text)controls[i]).color, currLine));
                         currLine = "";

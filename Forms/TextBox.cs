@@ -42,7 +42,7 @@ namespace XNAForms.Forms
 
         internal override void Draw()
         {
-            GUIHelper.FillRect(rectangle, new Color(26, 26, 26, alpha));
+            GUIHelper.FillRect(rectangle, new Color(32, 32, 32, alpha));
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
             GUIHelper.Scissor(rectangle);
             GUIHelper.DrawStr(text, position + new Position(-vPos + 4, 2), new Color(255, 255, 255, alpha));

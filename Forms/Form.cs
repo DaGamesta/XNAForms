@@ -57,7 +57,7 @@ namespace XNAForms.Forms
             }
         }
         private ResizeInfo res;
-        internal bool runClicks
+        private bool runClicks
         {
             get
             {
@@ -101,7 +101,10 @@ namespace XNAForms.Forms
             GUIHelper.OutlineRect(titlebar, new Color(0, 0, 0, alpha));
             GUIHelper.DrawStr(text, position + new Position(6, -tBarHeight + 6), new Color(255, 255, 255, alpha));
             Rectangle window = new Rectangle(position.X, position.Y, size.width, size.height);
-            GUIHelper.FillRect(window, new Color(17, 17, 17, alpha));
+            GUIHelper.FillRect(window, new Color(16, 16, 16, alpha));
+            GUIHelper.OutlineRect(window, new Color(0, 0, 0, alpha));
+            window.Inflate(-6, -6);
+            GUIHelper.FillRect(window, new Color(23, 23, 23, alpha));
             GUIHelper.OutlineRect(window, new Color(0, 0, 0, alpha));
             foreach (Control c in controls)
             {

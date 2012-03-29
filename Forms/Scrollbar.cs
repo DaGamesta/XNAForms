@@ -122,7 +122,7 @@ namespace XNAForms.Forms
                 Color tint = (new Rectangle(scrollbar.X + position.X, scrollbar.Y + position.Y, scrollbar.Width, scrollbar.Height).IntersectsMouse() || movInfo.dir != Orientation.NONE) ?
                     (Input.LeftD ? new Color(210, 210, 255, alpha) : new Color(230, 230, 255, alpha)) : new Color(255, 255, 255, alpha);
                 Rectangle backing = new Rectangle(position.X, position.Y, base.size.width, base.size.height);
-                GUIHelper.FillRect(backing, new Color(26, 26, 26, alpha));
+                GUIHelper.FillRect(backing, new Color(20, 20, 20, alpha));
                 GUIHelper.OutlineRect(backing, new Color(0, 0, 0, alpha));
                 GUIHelper.sb.Draw(isVertical ? VScrollbarTexture : HScrollbarTexture, scrollbar, tint);
                 GUIHelper.OutlineRect(scrollbar, new Color(0, 0, 0, alpha));
