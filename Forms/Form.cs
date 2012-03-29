@@ -57,7 +57,7 @@ namespace XNAForms.Forms
             }
         }
         private ResizeInfo res;
-        private bool runClicks
+        internal bool runClicks
         {
             get
             {
@@ -192,6 +192,11 @@ namespace XNAForms.Forms
                     {
                         moving = true;
                     }
+                    if (rectangle.IntersectsMouse())
+                    {
+                        GUI.formOrder.Remove(index);
+                        GUI.formOrder.Add(index);
+                    }
                 }
             }
             if (moving)
@@ -275,11 +280,14 @@ namespace XNAForms.Forms
                     size.height = Input.mY - position.Y - res.pt.Y;
                 }
             }
-            if (onUpdate != null)
+            if (isActive)
             {
-                onUpdate.Invoke(this, new EventArgs());
+                if (onUpdate != null)
+                {
+                    onUpdate.Invoke(this, new EventArgs());
+                }
+                base.Update();
             }
-            base.Update();
         }
     }
 }

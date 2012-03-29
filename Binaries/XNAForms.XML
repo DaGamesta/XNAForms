@@ -134,6 +134,11 @@
             Represents a visible object on a form.
             </summary>
         </member>
+        <member name="F:XNAForms.Forms.Control.active">
+            <summary>
+            Whether the control is active or not.
+            </summary>
+        </member>
         <member name="F:XNAForms.Forms.Control.dockStyle">
             <summary>
             Docking style of the control.

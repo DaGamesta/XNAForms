@@ -16,6 +16,10 @@ namespace XNAForms.Forms
     public abstract class Control
     {
         private Position fPosition;
+        /// <summary>
+        /// Whether the control is active or not.
+        /// </summary>
+        internal bool active;
         internal int alpha = 255;
         /// <summary>
         /// Docking style of the control.

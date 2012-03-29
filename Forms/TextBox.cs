@@ -13,10 +13,8 @@ namespace XNAForms.Forms
     /// </summary>
     public class TextBox : Control
     {
-        private bool active;
         private int cIndex;
         private int cPos;
-        private int letters;
         /// <summary>
         /// Fires when the textbox is activated.
         /// </summary>
