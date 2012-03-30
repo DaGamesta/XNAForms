@@ -17,9 +17,9 @@ namespace XNAForms.Forms
     {
         private Position fPosition;
         /// <summary>
-        /// Whether the control is active or not.
+        /// Gets whether the control is active or not.
         /// </summary>
-        internal bool active;
+        public bool active { get; internal set; }
         internal int alpha = 255;
         /// <summary>
         /// Docking style of the control.

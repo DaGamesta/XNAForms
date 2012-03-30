@@ -42,7 +42,7 @@ namespace XNAForms.Forms
         /// </summary>
         public void Clear()
         {
-            cPos = vPos = 0;
+            cIndex = cPos = vPos = 0;
             text = "";
         }
         internal override void Draw()
