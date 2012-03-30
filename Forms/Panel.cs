@@ -81,7 +81,10 @@ namespace XNAForms.Forms
         {
             foreach (Control c in controls)
             {
-                c.Draw();
+                if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(c.rectangle))
+                {
+                    c.Draw();
+                }
             }
         }
         internal override void Update()

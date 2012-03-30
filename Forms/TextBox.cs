@@ -49,7 +49,7 @@ namespace XNAForms.Forms
         {
             GUIHelper.FillRect(rectangle, new Color(32, 32, 32, alpha));
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
-            GUIHelper.Scissor(rectangle);
+            GUIHelper.Scissor(Rectangle.Intersect(GUIHelper.sb.GraphicsDevice.Viewport.Bounds, rectangle));
             GUIHelper.DrawStr(text, position + new Position(-vPos + 4, 2), new Color(255, 255, 255, alpha));
             GUIHelper.Unscissor();
             if (active && timer < 30)
@@ -101,13 +101,14 @@ namespace XNAForms.Forms
                 if (Input.TypeKey(Keys.Back) && cIndex != 0)
                 {
                     timer = 0;
+                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
                     if (vPos > 0)
                     {
-                        vPos -= (int)GUIHelper.StrSize(text[cIndex - 1].ToString()).X;
+                        vPos -= diff;
                     }
                     else
                     {
-                        cPos -= (int)GUIHelper.StrSize(text[cIndex - 1].ToString()).X;
+                        cPos -= diff;
                     }
                     text = text.Remove(cIndex - 1, 1);
                     cIndex--;
@@ -115,23 +116,26 @@ namespace XNAForms.Forms
                 if (Input.TypeKey(Keys.Delete) && cIndex != text.Length)
                 {
                     timer = 0;
+                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
                     if (vPos > 0)
                     {
-                        vPos -= (int)GUIHelper.StrSize(text[cIndex].ToString()).X;
-                        cPos += (int)GUIHelper.StrSize(text[cIndex].ToString()).X;
+                        vPos -= diff;
+                        cPos += diff;
                     }
                     text = text.Remove(cIndex, 1);
                 }
                 if (Input.TypeKey(Keys.Left) && cIndex != 0)
                 {
                     timer = 0;
-                    cPos -= (int)GUIHelper.StrSize(text[cIndex - 1].ToString()).X;
+                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
+                    cPos -= diff;
                     cIndex--;
                 }
                 else if (Input.TypeKey(Keys.Right) && cIndex != text.Length)
                 {
                     timer = 0;
-                    cPos += (int)GUIHelper.StrSize(text[cIndex].ToString()).X;
+                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
+                    cPos += diff;
                     cIndex++;
                 }
                 if (Input.TappedKey(Keys.Enter) && onEnter != null)
