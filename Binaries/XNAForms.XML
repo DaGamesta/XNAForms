@@ -393,6 +393,11 @@
             <param name="size">Size for the new textbox.</param>
             <param name="def">Default string for the new textbox.</param>
         </member>
+        <member name="M:XNAForms.Forms.TextBox.Clear">
+            <summary>
+            Clears the textbox.
+            </summary>
+        </member>
         <member name="E:XNAForms.Forms.TextBox.onActivate">
             <summary>
             Fires when the textbox is activated.

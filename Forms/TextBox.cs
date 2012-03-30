@@ -37,7 +37,14 @@ namespace XNAForms.Forms
         {
             text = def;
         }
-
+        /// <summary>
+        /// Clears the textbox.
+        /// </summary>
+        public void Clear()
+        {
+            cPos = vPos = 0;
+            text = "";
+        }
         internal override void Draw()
         {
             GUIHelper.FillRect(rectangle, new Color(32, 32, 32, alpha));
@@ -47,7 +54,12 @@ namespace XNAForms.Forms
             GUIHelper.Unscissor();
             if (active && timer < 30)
             {
-                GUIHelper.DrawLn(position + new Position(cPos, 2), position + new Position(cPos, size.height - 2), new Color(255, 255, 255, alpha));
+                int cPos = this.cPos;
+                if (cPos == 4)
+                {
+                    cPos = 0;
+                }
+                GUIHelper.DrawLn(position + new Position(cPos + 4, 2), position + new Position(cPos + 4, size.height - 2), new Color(255, 255, 255, alpha));
             }
         }
         internal override void Update()
@@ -66,7 +78,7 @@ namespace XNAForms.Forms
                     {
                         cIndex++;
                     }
-                    cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
+                    cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos;
                     if (onActivate != null)
                     {
                         onActivate.Invoke(this, new EventArgs());
@@ -78,11 +90,12 @@ namespace XNAForms.Forms
                 timer++;
                 timer %= 60;
                 string next = Input.NextStr();
-                text += next;
+                text = text.Substring(0, cIndex) + next + text.Substring(cIndex);
                 cIndex += next.Length;
-                cPos += (int)GUIHelper.StrSize(next).X;
                 if (next != "")
                 {
+                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - cPos - vPos;
+                    cPos += diff;
                     timer = 0;
                 }
                 if (Input.TypeKey(Keys.Back) && cIndex != 0)

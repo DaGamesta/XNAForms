@@ -64,7 +64,7 @@ namespace XNAForms.Forms
         {
             texts.Clear();
             int maxChars = (size.width - 15) / 6;
-            for (int i= 0; i < controls.Count; i++)
+            for (int i = 0; i < controls.Count; i++)
             {
                 string currLine = "";
                 string str = controls[i].text;

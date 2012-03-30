@@ -92,6 +92,7 @@ namespace XNAForms.Forms
             : base(position, size)
         {
             text = title;
+            this.position.Y += tBarHeight;
         }
 
         internal override void Draw()
