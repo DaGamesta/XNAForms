@@ -98,19 +98,19 @@ namespace XNAForms.Forms
             {
                 if (left || top)
                 {
-                    position = owner.position + new Position(6, 6);
+                    position = new Position(6, 6);
                 }
                 else if (right)
                 {
-                    position = owner.position + new Position(owner.size.width - size.width - 6, 6);
+                    position = new Position(owner.size.width - size.width - 6, 6);
                 }
                 else if (bottom)
                 {
-                    position = owner.position + new Position(6, owner.size.height - size.height - 6);
+                    position = new Position(6, owner.size.height - size.height - 6);
                 }
                 else
                 {
-                    position = owner.position + fPosition;
+                    position = fPosition;
                 }
             }
             else

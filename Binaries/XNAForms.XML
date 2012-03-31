@@ -179,11 +179,6 @@
             The controls that the panel encapsulates.
             </summary>
         </member>
-        <member name="F:XNAForms.Forms.Panel.scrollbars">
-            <summary>
-            The scrollbars that the panel holds.
-            </summary>
-        </member>
         <member name="M:XNAForms.Forms.Panel.#ctor(XNAForms.Position,XNAForms.Size,XNAForms.Forms.Control[])">
             <summary>
             Creates a new panel.
@@ -197,14 +192,6 @@
             Adds a control.
             </summary>
             <param name="c">Control to add.</param>
-        </member>
-        <member name="M:XNAForms.Forms.Panel.AddScrollbar(XNAForms.Forms.Placement,System.Func{System.Int32},System.Func{System.Int32})">
-            <summary>
-            Adds a scrollbar.
-            </summary>
-            <param name="placement">Scrollbar placement.</param>
-            <param name="t">Total function for scrollbar.</param>
-            <param name="v">Viewable function for scrollbar.</param>
         </member>
         <member name="T:XNAForms.Forms.ContextMenuArea">
             <summary>
@@ -285,9 +272,9 @@
             <param name="position">Position of the new textarea.</param>
             <param name="size">Size of the new textarea.</param>
         </member>
-        <member name="M:XNAForms.Forms.TextArea.AddText(XNAForms.Forms.Text)">
+        <member name="M:XNAForms.Forms.TextArea.Add(XNAForms.Forms.Text)">
             <summary>
-            Adds text to the textarea.
+            Adds a line of text to the textarea
             </summary>
             <param name="text">The text to add.</param>
         </member>
@@ -481,64 +468,6 @@
         <member name="T:XNAForms.Forms.Scrollbar">
             <summary>
             Represents a movable scrollbar.
-            </summary>
-        </member>
-        <member name="F:XNAForms.Forms.Scrollbar.scrollbarPosition">
-            <summary>
-            The Scrollbar position (that is, the position of the movable part).
-            </summary>
-        </member>
-        <member name="F:XNAForms.Forms.Scrollbar.totalFunction">
-            <summary>
-            The function that gets the amount of total items.
-            </summary>
-        </member>
-        <member name="F:XNAForms.Forms.Scrollbar.viewableFunction">
-            <summary>
-            The function that gets the amount of viewable items.
-            </summary>
-        </member>
-        <member name="M:XNAForms.Forms.Scrollbar.#ctor(XNAForms.Position,System.Int32,XNAForms.Orientation)">
-            <summary>
-            Creates a new Scrollbar.
-            </summary>
-            <param name="position">Position of the Scrollbar.</param>
-            <param name="size">Length/width of the Scrollbar.</param>
-            <param name="orientation">Optionally, the orientation of the Scrollbar.</param>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.isNeeded">
-            <summary>
-            Gets if the Scrollbar is needed.
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.isVertical">
-            <summary>
-            Gets if the Scrollbar is vertical.
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.scrollbarSize">
-            <summary>
-            Gets the size of the Scrollbar (that is, the movable part).
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.size">
-            <summary>
-            Gets the length/width of the Scrollbar.
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.total">
-            <summary>
-            Gets the total number of items.
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.value">
-            <summary>
-            Gets the value of the scrollbar.
-            </summary>
-        </member>
-        <member name="P:XNAForms.Forms.Scrollbar.viewable">
-            <summary>
-            Gets the viewable amount of items.
             </summary>
         </member>
         <member name="T:XNAForms.Forms.ControlEventHandler">

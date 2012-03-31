@@ -54,12 +54,7 @@ namespace XNAForms.Forms
             GUIHelper.Unscissor();
             if (active && timer < 30)
             {
-                int cPos = this.cPos;
-                if (cPos == 4)
-                {
-                    cPos = 0;
-                }
-                GUIHelper.DrawLn(position + new Position(cPos + 4, 2), position + new Position(cPos + 4, size.height - 2), new Color(255, 255, 255, alpha));
+                GUIHelper.DrawLn(position + new Position(cPos, 2), position + new Position(cPos, size.height - 2), new Color(255, 255, 255, alpha));
             }
         }
         internal override void Update()
@@ -78,7 +73,7 @@ namespace XNAForms.Forms
                     {
                         cIndex++;
                     }
-                    cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos;
+                    cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
                     if (onActivate != null)
                     {
                         onActivate.Invoke(this, new EventArgs());
@@ -95,7 +90,7 @@ namespace XNAForms.Forms
                 if (next != "")
                 {
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - cPos - vPos;
-                    cPos += diff;
+                    cPos += diff + 4;
                     timer = 0;
                 }
                 if (Input.TypeKey(Keys.Back) && cIndex != 0)

@@ -39,10 +39,6 @@ namespace XNAForms.Forms
                 option.width = mX > 200 ? mX : 200;
             }
             Rectangle menu = new Rectangle(position.X, position.Y, size.width, size.height);
-            if (menu.Right > GUIHelper.sb.GraphicsDevice.Viewport.Width)
-            {
-                position.X = Input.mX - size.width;
-            }
             if (menu.Bottom > GUIHelper.sb.GraphicsDevice.Viewport.Height)
             {
                 position.Y = Input.mY - size.height;

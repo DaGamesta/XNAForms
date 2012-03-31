@@ -7,76 +7,45 @@ namespace XNAForms.Forms
     /// <summary>
     /// Represents a movable scrollbar.
     /// </summary>
-    public sealed class Scrollbar : Control
+    internal sealed class Scrollbar : Control
     {
         internal static Texture2D HScrollbarTexture;
         internal static Texture2D VScrollbarTexture;
 
         private MoveInfo movInfo;
-        private Orientation orientation;
-        private int sSize;
-        /// <summary>
-        /// Gets if the Scrollbar is needed.
-        /// </summary>
-        public bool isNeeded
+        internal bool isNeeded
         {
             get
             {
                 return viewable < total;
             }
         }
-        /// <summary>
-        /// Gets if the Scrollbar is vertical.
-        /// </summary>
-        public bool isVertical
+        internal bool isVertical
         {
             get
             {
                 return orientation == Orientation.VERTICAL;
             }
         }
-        /// <summary>
-        /// The Scrollbar position (that is, the position of the movable part).
-        /// </summary>
-        public int scrollbarPosition;
-        /// <summary>
-        /// Gets the size of the Scrollbar (that is, the movable part).
-        /// </summary>
-        public int scrollbarSize
-        {
-            get
-            {
-                return sSize;
-            }
-        }
-        /// <summary>
-        /// Gets the length/width of the Scrollbar.
-        /// </summary>
-        public new int size
+        private Orientation orientation;
+        internal int scrollbarPosition;
+        internal new int size
         {
             get
             {
                 return isVertical ? base.size.height : base.size.width;
             }
         }
-        /// <summary>
-        /// Gets the total number of items.
-        /// </summary>
-        public int total
+        internal int sSize;
+        internal int total
         {
             get
             {
                 return totalFunction();
             }
         }
-        /// <summary>
-        /// The function that gets the amount of total items.
-        /// </summary>
-        public Func<int> totalFunction;
-        /// <summary>
-        /// Gets the value of the scrollbar.
-        /// </summary>
-        public float value
+        internal Func<int> totalFunction;
+        internal float value
         {
             get
             {
@@ -84,35 +53,23 @@ namespace XNAForms.Forms
                 {
                     return 0;
                 }
-                return ((float)(size - scrollbarSize - scrollbarPosition) / (float)(size - scrollbarSize)) * (float)(total - viewable);
+                return ((float)(size - sSize - scrollbarPosition) / (float)(size - sSize)) * (float)(total - viewable);
             }
         }
-        /// <summary>
-        /// Gets the viewable amount of items.
-        /// </summary>
-        public int viewable
+        internal int viewable
         {
             get
             {
                 return viewableFunction();
             }
         }
-        /// <summary>
-        /// The function that gets the amount of viewable items.
-        /// </summary>
-        public Func<int> viewableFunction;
-        /// <summary>
-        /// Creates a new Scrollbar.
-        /// </summary>
-        /// <param name="position">Position of the Scrollbar.</param>
-        /// <param name="size">Length/width of the Scrollbar.</param>
-        /// <param name="orientation">Optionally, the orientation of the Scrollbar.</param>
-        public Scrollbar(Position position, int size, Orientation orientation = Orientation.VERTICAL)
+        internal Func<int> viewableFunction;
+
+        internal Scrollbar(Position position, int size, Orientation orientation = Orientation.VERTICAL)
             : base(position, orientation == Orientation.VERTICAL ? new Size(15, size) : new Size(size, 15))
         {
             this.orientation = orientation;
         }
-
         internal override void Draw()
         {
             if (isNeeded)
@@ -124,7 +81,7 @@ namespace XNAForms.Forms
                 Rectangle backing = new Rectangle(position.X, position.Y, base.size.width, base.size.height);
                 GUIHelper.FillRect(backing, new Color(20, 20, 20, alpha));
                 GUIHelper.OutlineRect(backing, new Color(0, 0, 0, alpha));
-                GUIHelper.sb.Draw(isVertical ? VScrollbarTexture : HScrollbarTexture, scrollbar, tint);
+                GUIHelper.sb.Draw(isVertical ? VScrollbarTexture : HScrollbarTexture, new Rectangle(scrollbar.X + GUIHelper.offset.X, scrollbar.Y + GUIHelper.offset.Y, scrollbar.Width, scrollbar.Height), tint);
                 GUIHelper.OutlineRect(scrollbar, new Color(0, 0, 0, alpha));
             }
         }

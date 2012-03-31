@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace XNAForms.Forms
 {
@@ -8,13 +9,6 @@ namespace XNAForms.Forms
     /// </summary>
     public sealed class TextArea : Panel
     {
-        private Scrollbar scrollbar
-        {
-            get
-            {
-                return scrollbars[0];
-            }
-        }
         private List<Text> texts = new List<Text>(1000);
         /// <summary>
         /// Creates a new textarea.
@@ -24,27 +18,14 @@ namespace XNAForms.Forms
         public TextArea(Position position, Size size)
             : base(position, size)
         {
-            AddScrollbar(Placement.RIGHT, () => texts.Count, () =>
-                {
-                    int y = 0;
-                    for (int i = 0; i < texts.Count; i++)
-                    {
-                        y += (int)GUIHelper.StrSize(texts[i].text).Y;
-                        if (y > this.size.height - 1)
-                        {
-                            return i;
-                        }
-                    }
-                    return scrollbar.total + 1;
-                });
         }
         /// <summary>
-        /// Adds text to the textarea.
+        /// Adds a line of text to the textarea
         /// </summary>
         /// <param name="text">The text to add.</param>
-        public void AddText(Text text)
+        public void Add(Text text)
         {
-            controls.Add(text);
+            texts.Add(text);
         }
         /// <summary>
         /// Clears the textarea of all text.
@@ -56,47 +37,34 @@ namespace XNAForms.Forms
         }
         internal override void Draw()
         {
-            scrollbar.Draw();
-            int value = (int)scrollbar.value;
-            int y = 1;
-            for (int i = value; i < value + scrollbar.viewable; i++)
-            {
-                if (i >= 0 && i < texts.Count)
-                {
-                    GUIHelper.DrawStr(texts[i].text, position + new Position(4, y), texts[i].color);
-                    y += (int)GUIHelper.StrSize(texts[i].text).Y;
-                }
-            }
+            base.Draw();
+            GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, 255));
         }
         internal override void Update()
         {
-            texts.Clear();
-            int maxChars = (size.width - 15) / 6;
-            for (int i = 0; i < controls.Count; i++)
+            controls.Clear();
+            int y = 1;
+            for (int i = 0; i < texts.Count; i++)
             {
                 string currLine = "";
-                string str = controls[i].text;
+                string str = texts[i].text;
                 string[] strArr = str.Split(' ');
                 foreach (string word in strArr)
                 {
                     if (GUIHelper.StrSize(currLine + word).X >= size.width - 25)
                     {
-                        texts.Add(new Text(position, ((Text)controls[i]).color, currLine));
+                        controls.Add(new Text(new Position(4, y), ((Text)texts[i]).color, currLine));
+                        y += (int)GUIHelper.StrSize(currLine).Y;
                         currLine = "";
                     }
                     currLine += word + " ";
                 }
                 if (currLine != "")
                 {
-                    texts.Add(new Text(position, ((Text)controls[i]).color, currLine));
+                    controls.Add(new Text(new Position(4, y), ((Text)texts[i]).color, currLine));
+                    y += (int)GUIHelper.StrSize(currLine).Y;
                 }
             }
-            if (rectangle.IntersectsMouse() && Input.mDS != 0 && GUI.contextMenu != null)
-            {
-                scrollbar.scrollbarPosition += (int)((float)(3 / (float)scrollbar.total) * (float)scrollbar.size) * Math.Sign(Input.mDS);	
-            }
-            scrollbar.Reposition(this);
-            scrollbar.Update();
             base.Update();
         }
     }

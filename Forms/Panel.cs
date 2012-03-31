@@ -14,10 +14,8 @@ namespace XNAForms.Forms
         /// The controls that the panel encapsulates.
         /// </summary>
         protected internal List<Control> controls = new List<Control>();
-        /// <summary>
-        /// The scrollbars that the panel holds.
-        /// </summary>
-        protected internal List<Scrollbar> scrollbars = new List<Scrollbar>();
+        private Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
+        private Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
 
         /// <summary>
         /// Creates a new panel.
@@ -32,6 +30,37 @@ namespace XNAForms.Forms
             {
                 this.controls.Add(c);
             }
+            hScrollbar.positionFunction = () => this.position + new Position(0, this.size.height - 15);
+            hScrollbar.sizeFunction = () => new Size(this.size.width, 15);
+            hScrollbar.totalFunction = () =>
+                {
+                    int maxX = 0;
+                    foreach (Control c in this.controls)
+                    {
+                        if (c.position.X + c.size.width > maxX)
+                        {
+                            maxX = c.position.X + c.size.width;
+                        }
+                    }
+                    return maxX;
+                };
+            hScrollbar.viewableFunction = () => this.size.width;
+
+            vScrollbar.positionFunction = () => this.position + new Position(this.size.width - 15, 0);
+            vScrollbar.sizeFunction = () => new Size(15, this.size.height);
+            vScrollbar.totalFunction = () =>
+            {
+                int maxY = 0;
+                foreach (Control c in this.controls)
+                {
+                    if (c.position.Y + c.size.height > maxY)
+                    {
+                        maxY = c.position.Y + c.size.height;
+                    }
+                }
+                return maxY;
+            };
+            vScrollbar.viewableFunction = () => this.size.height;
         }
         /// <summary>
         /// Adds a control.
@@ -39,52 +68,49 @@ namespace XNAForms.Forms
         /// <param name="c">Control to add.</param>
         protected void Add(Control c)
         {
-            controls.Add(c);
-        }
-        /// <summary>
-        /// Adds a scrollbar.
-        /// </summary>
-        /// <param name="placement">Scrollbar placement.</param>
-        /// <param name="t">Total function for scrollbar.</param>
-        /// <param name="v">Viewable function for scrollbar.</param>
-        protected void AddScrollbar(Placement placement, Func<int> t, Func<int> v)
-        {
-            Scrollbar scrollbar;
-            switch (placement)
+            if (!(c is Form))
             {
-                case Placement.TOP:
-                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
-                    scrollbar.positionFunction = () => this.position;
-                    scrollbar.sizeFunction = () => new Size(this.size.width, 15);
-                    break;
-                case Placement.RIGHT:
-                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
-                    scrollbar.positionFunction = () => this.position + new Position(this.size.width - 15, 0);
-                    scrollbar.sizeFunction = () => new Size(15, this.size.height);
-                    break;
-                case Placement.BOTTOM:
-                    scrollbar = new Scrollbar(position, 0, Orientation.HORIZONTAL);
-                    scrollbar.positionFunction = () => this.position + new Position(0, this.size.height - 15);
-                    scrollbar.sizeFunction = () => new Size(this.size.width, 15);
-                    break;
-                default:
-                    scrollbar = new Scrollbar(position, 0, Orientation.VERTICAL);
-                    scrollbar.positionFunction = () => this.position;
-                    scrollbar.sizeFunction = () => new Size(15, this.size.height);
-                    break;
+                controls.Add(c);
             }
-            scrollbar.totalFunction = t;
-            scrollbar.viewableFunction = v;
-            scrollbars.Add(scrollbar);
         }
         internal override void Draw()
         {
-            foreach (Control c in controls)
+            if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(rectangle))
             {
-                if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(c.rectangle))
+                GUIHelper.Scissor(rectangle);
+                Position offset = GUIHelper.offset;
+                if (!(this is Form))
                 {
-                    c.Draw();
+                    int x = 0, y = 0;
+                    if (hScrollbar.isNeeded)
+                    {
+                        x = (int)hScrollbar.value;
+                    }
+                    if (vScrollbar.isNeeded)
+                    {
+                        y = (int)vScrollbar.value;
+                    }
+                    GUIHelper.offset = position + offset - new Position(x, y);
                 }
+                else
+                {
+                    GUIHelper.offset = position;
+                }
+                foreach (Control c in controls)
+                {
+                    if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(c.rectangle))
+                    {
+                        c.Draw();
+                    }
+                }
+                GUIHelper.Unscissor();
+                GUIHelper.offset = new Position(0, 0);
+                if (!(this is Form))
+                {
+                    hScrollbar.Draw();
+                    vScrollbar.Draw();
+                }
+                GUIHelper.offset = offset;
             }
         }
         internal void MaskUpdate<T>()
@@ -102,8 +128,14 @@ namespace XNAForms.Forms
             foreach (Control c in controls)
             {
                 c.Reposition(this);
+                c.position += this.position;
                 c.Update();
+                c.position -= this.position;
             }
+            hScrollbar.Reposition(this);
+            hScrollbar.Update();
+            vScrollbar.Reposition(this);
+            vScrollbar.Update();
         }
     }
 }

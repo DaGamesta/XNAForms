@@ -258,7 +258,7 @@ namespace XNAForms
                 }
                 else
                 {
-                    KeyCD[i] = 40;
+                    KeyCD[i] = 50;
                 }
             }
         }

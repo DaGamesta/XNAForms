@@ -10,15 +10,19 @@ namespace XNAForms
     internal static class GUIHelper
     {
         internal static SpriteFont font;
+        internal static Position offset;
         internal static SpriteBatch sb;
         internal static Texture2D wTex;
 
         internal static void DrawLn(Position p1, Position p2, Color c)
         {
+            p1 += offset;
+            p2 += offset;
             sb.Draw(wTex, p1, null, c, (float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X), Vector2.Zero, new Vector2(((Vector2)(p1 - p2)).Length(), 1), SpriteEffects.None, 0);
         }
         internal static void DrawStr(string str, Position pos, Color col)
         {
+            pos += offset;
             for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++)
                     if (i != 0 && j != 0)
@@ -27,6 +31,8 @@ namespace XNAForms
         }
         internal static void FillRect(Rectangle rect, Color col)
         {
+            rect.X += offset.X;
+            rect.Y += offset.Y;
             sb.Draw(wTex, rect, col);
         }
         internal static Texture2D GenGradTex(GradientPoint[] gp, Orientation gs)
@@ -76,7 +82,9 @@ namespace XNAForms
         {
             sb.End();
             sb.Begin(SpriteSortMode.Deferred, null, null, null, new RasterizerState() { ScissorTestEnable = true });
-            sb.GraphicsDevice.ScissorRectangle = r;
+            r.X += offset.X;
+            r.Y += offset.Y;
+            sb.GraphicsDevice.ScissorRectangle = Rectangle.Intersect(r, sb.GraphicsDevice.Viewport.Bounds);
         }
         internal static Vector2 StrSize(string str)
         {
