@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace XNAForms.Forms
 {
@@ -98,7 +99,9 @@ namespace XNAForms.Forms
                 }
                 foreach (Control c in controls)
                 {
-                    if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(c.rectangle))
+                    Rectangle r = c.rectangle;
+                    r.Offset(GUIHelper.offset.X, GUIHelper.offset.Y);
+                    if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(r))
                     {
                         c.Draw();
                     }
@@ -125,6 +128,10 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
+            hScrollbar.Reposition(this);
+            hScrollbar.Update();
+            vScrollbar.Reposition(this);
+            vScrollbar.Update();
             foreach (Control c in controls)
             {
                 c.Reposition(this);
@@ -132,10 +139,6 @@ namespace XNAForms.Forms
                 c.Update();
                 c.position -= this.position;
             }
-            hScrollbar.Reposition(this);
-            hScrollbar.Update();
-            vScrollbar.Reposition(this);
-            vScrollbar.Update();
         }
     }
 }

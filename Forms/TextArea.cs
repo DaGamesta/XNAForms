@@ -53,7 +53,7 @@ namespace XNAForms.Forms
                 {
                     if (GUIHelper.StrSize(currLine + word).X >= size.width - 25)
                     {
-                        controls.Add(new Text(new Position(4, y), ((Text)texts[i]).color, currLine));
+                        controls.Add(new Text(new Position(4, y), texts[i].color, currLine));
                         y += (int)GUIHelper.StrSize(currLine).Y;
                         currLine = "";
                     }
@@ -61,7 +61,7 @@ namespace XNAForms.Forms
                 }
                 if (currLine != "")
                 {
-                    controls.Add(new Text(new Position(4, y), ((Text)texts[i]).color, currLine));
+                    controls.Add(new Text(new Position(4, y), texts[i].color, currLine));
                     y += (int)GUIHelper.StrSize(currLine).Y;
                 }
             }
