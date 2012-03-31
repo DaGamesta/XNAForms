@@ -206,6 +206,24 @@
             <param name="t">Total function for scrollbar.</param>
             <param name="v">Viewable function for scrollbar.</param>
         </member>
+        <member name="T:XNAForms.Forms.ContextMenuArea">
+            <summary>
+            Represents a context menu area which contains all information needed for a context menu to be created.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.ContextMenuArea.#ctor(XNAForms.Position,XNAForms.Size)">
+            <summary>
+            Creates a new context menu area.
+            </summary>
+            <param name="position">Position for the new context menu area.</param>
+            <param name="size">Size for the new context menu area.</param>
+        </member>
+        <member name="M:XNAForms.Forms.ContextMenuArea.Add(XNAForms.Forms.ContextMenuOption)">
+            <summary>
+            Adds a context menu option.
+            </summary>
+            <param name="option">Context menu option to be added.</param>
+        </member>
         <member name="T:XNAForms.Size">
             <summary>
             Represents an integral size.
@@ -272,6 +290,11 @@
             Adds text to the textarea.
             </summary>
             <param name="text">The text to add.</param>
+        </member>
+        <member name="M:XNAForms.Forms.TextArea.Clear">
+            <summary>
+            Clears the textarea of all text.
+            </summary>
         </member>
         <member name="T:XNAForms.Forms.FormEventHandler">
             <summary>
@@ -379,6 +402,11 @@
             <param name="position">Position of the new text.</param>
             <param name="color">Color of the new text.</param>
             <param name="str">String of the new text.</param>
+        </member>
+        <member name="T:XNAForms.Forms.ContextMenu">
+            <summary>
+            Represents a right-click context menu.
+            </summary>
         </member>
         <member name="T:XNAForms.Forms.TextBox">
             <summary>
@@ -516,6 +544,27 @@
         <member name="T:XNAForms.Forms.ControlEventHandler">
             <summary>
             Represents the method(s) that handle various control events.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Forms.ContextMenuOption">
+            <summary>
+            Represents an option of a context menu.
+            </summary>
+        </member>
+        <member name="F:XNAForms.Forms.ContextMenuOption.onClick">
+            <summary>
+            Fires when the context menu option is clicked.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Forms.ContextMenuOption.#ctor(System.String)">
+            <summary>
+            Creates a new context menu option.
+            </summary>
+            <param name="str">Text for the new context menu option.</param>
+        </member>
+        <member name="T:XNAForms.Forms.ContextMenuOption.ClickHandler">
+            <summary>
+            Represents the method that handles a context menu option.
             </summary>
         </member>
     </members>

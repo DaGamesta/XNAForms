@@ -30,6 +30,13 @@ namespace XNAForms
                 return M.LeftButton == ButtonState.Pressed;
             }
         }
+        internal static bool LeftR
+        {
+            get
+            {
+                return M.LeftButton == ButtonState.Released && LastM.LeftButton == ButtonState.Pressed;
+            }
+        }
         private static KeyboardState K;
         internal static int[] KeyCD;
         internal static Array KeysArr;
@@ -69,6 +76,27 @@ namespace XNAForms
             get
             {
                 return M.Y;
+            }
+        }
+        internal static bool RightC
+        {
+            get
+            {
+                return M.RightButton == ButtonState.Pressed && LastM.RightButton == ButtonState.Released;
+            }
+        }
+        internal static bool RightD
+        {
+            get
+            {
+                return M.RightButton == ButtonState.Pressed;
+            }
+        }
+        internal static bool RightR
+        {
+            get
+            {
+                return M.RightButton == ButtonState.Released && LastM.RightButton == ButtonState.Pressed;
             }
         }
         internal static bool Shift

@@ -46,6 +46,14 @@ namespace XNAForms.Forms
         {
             controls.Add(text);
         }
+        /// <summary>
+        /// Clears the textarea of all text.
+        /// </summary>
+        public void Clear()
+        {
+            controls.Clear();
+            texts.Clear();
+        }
         internal override void Draw()
         {
             scrollbar.Draw();
@@ -83,7 +91,7 @@ namespace XNAForms.Forms
                     texts.Add(new Text(position, ((Text)controls[i]).color, currLine));
                 }
             }
-            if (rectangle.IntersectsMouse() && Input.mDS != 0)
+            if (rectangle.IntersectsMouse() && Input.mDS != 0 && GUI.contextMenu != null)
             {
                 scrollbar.scrollbarPosition += (int)((float)(3 / (float)scrollbar.total) * (float)scrollbar.size) * Math.Sign(Input.mDS);	
             }

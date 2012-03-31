@@ -17,6 +17,7 @@ namespace XNAForms
     /// </summary>
     public static class GUI
     {
+        internal static ContextMenu contextMenu;
         private static Cursor cursor;
         internal static Texture2D[] cursorTexs = new Texture2D[Enum.GetValues(typeof(CursorType)).Length];
         internal static List<Form> forms = new List<Form>();
@@ -62,6 +63,10 @@ namespace XNAForms
             {
                 forms[i].Draw();
             }
+            if (contextMenu != null)
+            {
+                contextMenu.Draw();
+            }
             cursor.Draw();
             cursor = new Cursor(CursorType.NORMAL);
             sb.End();
@@ -79,6 +84,7 @@ namespace XNAForms
             GUI.game = game;
             Scrollbar.HScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.VERTICAL);
             Scrollbar.VScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.HORIZONTAL);
+            ContextMenuOption.SelectedTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(90, 90, 90), 0), new GradientPoint(new Color(80, 80, 80), 9), new GradientPoint(new Color(60, 60, 60), 10), new GradientPoint(new Color(50, 50, 50), 20) }, Orientation.VERTICAL);
             Form.tbTex = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(34, 34, 34), 0), new GradientPoint(new Color(17, 17, 17), 28) }, Orientation.VERTICAL);
             GUIHelper.wTex = new Texture2D(game.GraphicsDevice, 1, 1);
             GUIHelper.wTex.SetData<Color>(new[] { Color.White });
@@ -95,6 +101,10 @@ namespace XNAForms
         public static void Update()
         {
             Input.Update();
+            if (contextMenu != null)
+            {
+                contextMenu.Update();
+            }
             foreach (Form f in forms)
             {
                 f.Update();

@@ -61,6 +61,10 @@ namespace XNAForms.Forms
         {
             get
             {
+                if (GUI.contextMenu != null)
+                {
+                    return false;
+                }
                 foreach (Form f in GUI.forms)
                 {
                     if (f != this)
@@ -281,7 +285,11 @@ namespace XNAForms.Forms
                     size.height = Input.mY - position.Y - res.pt.Y;
                 }
             }
-            if (isActive)
+            if (GUI.contextMenu != null)
+            {
+                MaskUpdate<ContextMenuArea>();
+            }
+            else if (isActive)
             {
                 if (onUpdate != null)
                 {

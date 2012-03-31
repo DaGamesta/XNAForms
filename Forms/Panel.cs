@@ -87,6 +87,16 @@ namespace XNAForms.Forms
                 }
             }
         }
+        internal void MaskUpdate<T>()
+        {
+            foreach (Control c in controls)
+            {
+                if (c is T)
+                {
+                    c.Update();
+                }
+            }
+        }
         internal override void Update()
         {
             foreach (Control c in controls)

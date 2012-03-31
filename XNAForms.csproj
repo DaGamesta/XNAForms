@@ -98,6 +98,9 @@
     <Compile Include="CursorType.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Forms\ContextMenu.cs" />
+    <Compile Include="Forms\ContextMenuArea.cs" />
+    <Compile Include="Forms\ContextMenuOption.cs" />
     <Compile Include="Forms\Control.cs" />
     <Compile Include="Forms\DockStyle.cs" />
     <Compile Include="Forms\Form.cs" />
