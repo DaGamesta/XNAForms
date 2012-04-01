@@ -13,13 +13,7 @@ namespace XNAForms.Forms
         internal static Texture2D VScrollbarTexture;
 
         private MoveInfo movInfo;
-        internal bool isNeeded
-        {
-            get
-            {
-                return viewable < total;
-            }
-        }
+        internal bool isNeeded;
         internal bool isVertical
         {
             get
@@ -100,6 +94,7 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
+            isNeeded = viewable < total;
             sSize = (int)Math.Round((float)viewable / total * size);
             if (!Input.LeftD)
             {
