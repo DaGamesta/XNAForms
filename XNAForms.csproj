@@ -104,6 +104,7 @@
     <Compile Include="Forms\Control.cs" />
     <Compile Include="Forms\DockStyle.cs" />
     <Compile Include="Forms\Form.cs" />
+    <Compile Include="Forms\Image.cs" />
     <Compile Include="Forms\MoveInfo.cs" />
     <Compile Include="Forms\ResizeInfo.cs" />
     <Compile Include="Forms\Scrollbar.cs" />

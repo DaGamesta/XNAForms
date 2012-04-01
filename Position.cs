@@ -9,6 +9,16 @@ namespace XNAForms
     public struct Position
     {
         /// <summary>
+        /// Returns a position whose coordinates are both 1.
+        /// </summary>
+        public Position One
+        {
+            get
+            {
+                return new Position(1, 1);
+            }
+        }
+        /// <summary>
         /// X coordinate of the position.
         /// </summary>
         public int X;
@@ -16,6 +26,16 @@ namespace XNAForms
         /// Y coordinate of the position.
         /// </summary>
         public int Y;
+        /// <summary>
+        /// Returns a position whose coordinates are both 0.
+        /// </summary>
+        public Position Zero
+        {
+            get
+            {
+                return new Position(0, 0);
+            }
+        }
 
         /// <summary>
         /// Creates a new position.
@@ -44,6 +64,20 @@ namespace XNAForms
         public static Position operator -(Position p1, Position p2)
         {
             return new Position(p1.X - p2.X, p1.Y - p2.Y);
+        }
+        /// <summary>
+        /// Checks if two positions are equivalent.
+        /// </summary>
+        public static bool operator ==(Position p1, Position p2)
+        {
+            return p1.X == p2.X && p1.Y == p2.Y;
+        }
+        /// <summary>
+        /// Checks if two positions are not equivalent.
+        /// </summary>
+        public static bool operator !=(Position p1, Position p2)
+        {
+            return p1.X != p2.X || p1.Y != p2.Y;
         }
         /// <summary>
         /// Converts a position to a Vector2.

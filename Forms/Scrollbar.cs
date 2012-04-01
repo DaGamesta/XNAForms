@@ -7,7 +7,7 @@ namespace XNAForms.Forms
     /// <summary>
     /// Represents a movable scrollbar.
     /// </summary>
-    internal sealed class Scrollbar : Control
+    public sealed class Scrollbar : Control
     {
         internal static Texture2D HScrollbarTexture;
         internal static Texture2D VScrollbarTexture;
@@ -37,6 +37,20 @@ namespace XNAForms.Forms
             }
         }
         internal int sSize;
+        private int realPos
+        {
+            get
+            {
+                if (isVertical)
+                {
+                    return size - sSize - scrollbarPosition;
+                }
+                else
+                {
+                    return scrollbarPosition;
+                }
+            }
+        }
         internal int total
         {
             get
@@ -53,7 +67,7 @@ namespace XNAForms.Forms
                 {
                     return 0;
                 }
-                return ((float)(size - sSize - scrollbarPosition) / (float)(size - sSize)) * (float)(total - viewable);
+                return ((float)realPos / (float)(size - sSize)) * (float)(total - viewable);
             }
         }
         internal int viewable
@@ -74,8 +88,7 @@ namespace XNAForms.Forms
         {
             if (isNeeded)
             {
-                int dist = size - sSize - scrollbarPosition;
-                Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + dist, 15, sSize) : new Rectangle(position.X + dist, position.Y, sSize, 15);
+                Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + realPos, 15, sSize) : new Rectangle(position.X + realPos, position.Y, sSize, 15);
                 Color tint = (new Rectangle(scrollbar.X + position.X, scrollbar.Y + position.Y, scrollbar.Width, scrollbar.Height).IntersectsMouse() || movInfo.dir != Orientation.NONE) ?
                     (Input.LeftD ? new Color(210, 210, 255, alpha) : new Color(230, 230, 255, alpha)) : new Color(255, 255, 255, alpha);
                 Rectangle backing = new Rectangle(position.X, position.Y, base.size.width, base.size.height);
@@ -93,8 +106,7 @@ namespace XNAForms.Forms
                 movInfo.dir = Orientation.NONE;
                 movInfo.mOff = Direction.NONE;
             }
-            int dist = size - sSize - scrollbarPosition;
-            Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + dist, 15, sSize) : new Rectangle(position.X + dist, position.Y, sSize, 15);
+            Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + realPos, 15, sSize) : new Rectangle(position.X + realPos, position.Y, sSize, 15);
             if (scrollbar.IntersectsMouse() && Input.LeftC)
             {
                 movInfo.dir = orientation;
@@ -129,27 +141,27 @@ namespace XNAForms.Forms
                 }
                 else
                 {
-                    if (scrollbarPosition - Input.mDX > size - sSize)
-                    {
-                        movInfo.mOff |= Direction.LEFT;
-                        scrollbarPosition = size - sSize;
-                    }
-                    if (scrollbarPosition - Input.mDX < 0)
+                    if (scrollbarPosition + Input.mDX > size - sSize)
                     {
                         movInfo.mOff |= Direction.RIGHT;
+                        scrollbarPosition = size - sSize;
+                    }
+                    if (scrollbarPosition + Input.mDX < 0)
+                    {
+                        movInfo.mOff |= Direction.LEFT;
                         scrollbarPosition = 0;
                     }
                     if ((movInfo.mOff & (Direction.LEFT | Direction.RIGHT)) == 0)
                     {
-                        scrollbarPosition -= Input.mDX;
-                    }
-                    if (Input.mX > movInfo.pt.X + scrollbar.X && (movInfo.mOff & Direction.LEFT) != 0)
-                    {
-                        movInfo.mOff &= ~Direction.LEFT;
+                        scrollbarPosition += Input.mDX;
                     }
                     if (Input.mX < movInfo.pt.X + scrollbar.X && (movInfo.mOff & Direction.RIGHT) != 0)
                     {
                         movInfo.mOff &= ~Direction.RIGHT;
+                    }
+                    if (Input.mX > movInfo.pt.X + scrollbar.X && (movInfo.mOff & Direction.LEFT) != 0)
+                    {
+                        movInfo.mOff &= ~Direction.LEFT;
                     }
                 }
             }

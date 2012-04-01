@@ -16,7 +16,27 @@ namespace XNAForms.Forms
         /// </summary>
         protected internal List<Control> controls = new List<Control>();
         private Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
+        /// <summary>
+        /// Gets the horizontal scrollbar's value.
+        /// </summary>
+        protected int hValue
+        {
+            get
+            {
+                return (int)hScrollbar.value;
+            }
+        }
         private Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
+        /// <summary>
+        /// Gets the vertical scrollbar's value.
+        /// </summary>
+        protected int vValue
+        {
+            get
+            {
+                return (int)vScrollbar.value;
+            }
+        }
 
         /// <summary>
         /// Creates a new panel.
@@ -32,7 +52,14 @@ namespace XNAForms.Forms
                 this.controls.Add(c);
             }
             hScrollbar.positionFunction = () => this.position + new Position(0, this.size.height - 15);
-            hScrollbar.sizeFunction = () => new Size(this.size.width, 15);
+            hScrollbar.sizeFunction = () =>
+                {
+                    if (vScrollbar.isNeeded)
+                    {
+                        return new Size(this.size.width - 16, 15);
+                    }
+                    return new Size(this.size.width, 15);
+                };
             hScrollbar.totalFunction = () =>
                 {
                     int maxX = 0;
@@ -45,29 +72,50 @@ namespace XNAForms.Forms
                     }
                     return maxX;
                 };
-            hScrollbar.viewableFunction = () => this.size.width;
+            hScrollbar.viewableFunction = () =>
+            {
+                if (vScrollbar.isNeeded)
+                {
+                    return this.size.width - 15;
+                }
+                return this.size.width;
+            };
 
             vScrollbar.positionFunction = () => this.position + new Position(this.size.width - 15, 0);
-            vScrollbar.sizeFunction = () => new Size(15, this.size.height);
-            vScrollbar.totalFunction = () =>
-            {
-                int maxY = 0;
-                foreach (Control c in this.controls)
+            vScrollbar.sizeFunction = () =>
                 {
-                    if (c.position.Y + c.size.height > maxY)
+                    if (hScrollbar.isNeeded)
                     {
-                        maxY = c.position.Y + c.size.height;
+                        return new Size(15, this.size.height - 16);
                     }
-                }
-                return maxY;
-            };
-            vScrollbar.viewableFunction = () => this.size.height;
+                    return new Size(15, this.size.height);
+                };
+            vScrollbar.totalFunction = () =>
+                {
+                    int maxY = 0;
+                    foreach (Control c in this.controls)
+                    {
+                        if (c.position.Y + c.size.height > maxY)
+                        {
+                            maxY = c.position.Y + c.size.height;
+                        }
+                    }
+                    return maxY;
+                };
+            vScrollbar.viewableFunction = () =>
+                {
+                    if (hScrollbar.isNeeded)
+                    {
+                        return this.size.height - 15;
+                    }
+                    return this.size.height;
+                };
         }
         /// <summary>
         /// Adds a control.
         /// </summary>
         /// <param name="c">Control to add.</param>
-        protected void Add(Control c)
+        public void Add(Control c)
         {
             if (!(c is Form))
             {
@@ -78,7 +126,16 @@ namespace XNAForms.Forms
         {
             if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(rectangle))
             {
-                GUIHelper.Scissor(rectangle);
+                Rectangle rect = rectangle;
+                if (vScrollbar.isNeeded)
+                {
+                    rect.Width -= 15;
+                }
+                if (hScrollbar.isNeeded)
+                {
+                    rect.Height -= 15;
+                }
+                GUIHelper.Scissor(rect);
                 Position offset = GUIHelper.offset;
                 if (!(this is Form))
                 {

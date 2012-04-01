@@ -7,20 +7,35 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XNAForms
 {
-    internal static class GUIHelper
+    /// <summary>
+    /// Allows for the drawing of miscellaneous objects.
+    /// </summary>
+    public static class GUIHelper
     {
         internal static SpriteFont font;
         internal static Position offset;
         internal static SpriteBatch sb;
         internal static Texture2D wTex;
 
-        internal static void DrawLn(Position p1, Position p2, Color c)
+        /// <summary>
+        /// Draws a line.
+        /// </summary>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
+        /// <param name="c">Color of the line.</param>
+        public static void DrawLn(Position p1, Position p2, Color c)
         {
             p1 += offset;
             p2 += offset;
             sb.Draw(wTex, p1, null, c, (float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X), Vector2.Zero, new Vector2(((Vector2)(p1 - p2)).Length(), 1), SpriteEffects.None, 0);
         }
-        internal static void DrawStr(string str, Position pos, Color col)
+        /// <summary>
+        /// Draws a string.
+        /// </summary>
+        /// <param name="str">String to draw.</param>
+        /// <param name="pos">Position of the string.</param>
+        /// <param name="col">Color of the string.</param>
+        public static void DrawStr(string str, Position pos, Color col)
         {
             pos += offset;
             for (int i = -1; i <= 1; i++)
@@ -29,7 +44,12 @@ namespace XNAForms
                         sb.DrawString(font, str, pos + new Position(i, j), new Color(0, 0, 0, col.A));
             sb.DrawString(font, str, pos, col);
         }
-        internal static void FillRect(Rectangle rect, Color col)
+        /// <summary>
+        /// Fills a rectangle.
+        /// </summary>
+        /// <param name="rect">The rectangle to be filled.</param>
+        /// <param name="col">Color to fill the rectangle in.</param>
+        public static void FillRect(Rectangle rect, Color col)
         {
             rect.X += offset.X;
             rect.Y += offset.Y;
@@ -70,7 +90,12 @@ namespace XNAForms
             }
             return tex;
         }
-        internal static void OutlineRect(Rectangle r, Color c)
+        /// <summary>
+        /// Outlines a rectangle.
+        /// </summary>
+        /// <param name="r">Rectangle to be outlined.</param>
+        /// <param name="c">Color to outline the rectangle in.</param>
+        public static void OutlineRect(Rectangle r, Color c)
         {
             Rectangle r1 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
             DrawLn(new Position(r1.X, r1.Y), new Position(r1.X + r1.Width, r1.Y), c);
@@ -86,7 +111,11 @@ namespace XNAForms
             r.Y += offset.Y;
             sb.GraphicsDevice.ScissorRectangle = Rectangle.Intersect(r, sb.GraphicsDevice.Viewport.Bounds);
         }
-        internal static Vector2 StrSize(string str)
+        /// <summary>
+        /// Gets the size of a string.
+        /// </summary>
+        /// <param name="str">The string whose size is to be gotten.</param>
+        public static Vector2 StrSize(string str)
         {
             return font.MeasureString(str);
         }

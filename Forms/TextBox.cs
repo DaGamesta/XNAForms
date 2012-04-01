@@ -63,10 +63,10 @@ namespace XNAForms.Forms
             {
                 GUI.SetCursor(CursorType.TEXT);
             }
-            if (Input.LeftC)
+            if (Input.LeftC || Input.RightC)
             {
                 active = rectangle.IntersectsMouse();
-                if (active)
+                if (active && Input.LeftC)
                 {
                     cIndex = 0;
                     while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
