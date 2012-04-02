@@ -43,7 +43,7 @@ namespace XNAForms.Forms
         internal override void Update()
         {
             controls.Clear();
-            int y = 1;
+            int y = 0;
             for (int i = 0; i < texts.Count; i++)
             {
                 string currLine = "";
@@ -51,7 +51,7 @@ namespace XNAForms.Forms
                 string[] strArr = str.Split(' ');
                 foreach (string word in strArr)
                 {
-                    if (GUIHelper.StrSize(currLine + word).X >= size.width - 25)
+                    if (GUIHelper.StrSize(currLine + word).X >= size.width - (vScrollbar.active ? 25 : 6))
                     {
                         controls.Add(new Text(new Position(4, y), texts[i].color, currLine));
                         y += (int)GUIHelper.StrSize(currLine).Y;

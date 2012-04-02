@@ -13,7 +13,6 @@ namespace XNAForms.Forms
         internal static Texture2D VScrollbarTexture;
 
         private MoveInfo movInfo;
-        internal bool isNeeded;
         internal bool isVertical
         {
             get
@@ -57,11 +56,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                if (!isNeeded)
-                {
-                    return 0;
-                }
-                return ((float)realPos / (float)(size - sSize)) * (float)(total - viewable);
+                return active ? ((float)realPos / (float)(size - sSize)) * (float)(total - viewable) : 0;
             }
         }
         internal int viewable
@@ -80,7 +75,7 @@ namespace XNAForms.Forms
         }
         internal override void Draw()
         {
-            if (isNeeded)
+            if (active)
             {
                 Rectangle scrollbar = isVertical ? new Rectangle(position.X, position.Y + realPos, 15, sSize) : new Rectangle(position.X + realPos, position.Y, sSize, 15);
                 Color tint = (new Rectangle(scrollbar.X + position.X, scrollbar.Y + position.Y, scrollbar.Width, scrollbar.Height).IntersectsMouse() || movInfo.dir != Orientation.NONE) ?
@@ -94,7 +89,7 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
-            isNeeded = viewable < total;
+            active = viewable < total;
             sSize = (int)Math.Round((float)viewable / total * size);
             if (!Input.LeftD)
             {

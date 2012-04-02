@@ -15,7 +15,7 @@ namespace XNAForms.Forms
         /// The controls that the panel encapsulates.
         /// </summary>
         protected internal List<Control> controls = new List<Control>();
-        private Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
+        internal Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
         /// <summary>
         /// Gets the horizontal scrollbar's value.
         /// </summary>
@@ -26,7 +26,7 @@ namespace XNAForms.Forms
                 return (int)hScrollbar.value;
             }
         }
-        private Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
+        internal Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
         /// <summary>
         /// Gets the vertical scrollbar's value.
         /// </summary>
@@ -54,7 +54,7 @@ namespace XNAForms.Forms
             hScrollbar.positionFunction = () => this.position + new Position(0, this.size.height - 15);
             hScrollbar.sizeFunction = () =>
                 {
-                    if (vScrollbar.isNeeded)
+                    if (vScrollbar.active)
                     {
                         return new Size(this.size.width - 16, 15);
                     }
@@ -74,7 +74,7 @@ namespace XNAForms.Forms
                 };
             hScrollbar.viewableFunction = () =>
             {
-                if (vScrollbar.isNeeded)
+                if (vScrollbar.active)
                 {
                     return this.size.width - 15;
                 }
@@ -84,7 +84,7 @@ namespace XNAForms.Forms
             vScrollbar.positionFunction = () => this.position + new Position(this.size.width - 15, 0);
             vScrollbar.sizeFunction = () =>
                 {
-                    if (hScrollbar.isNeeded)
+                    if (hScrollbar.active)
                     {
                         return new Size(15, this.size.height - 16);
                     }
@@ -104,7 +104,7 @@ namespace XNAForms.Forms
                 };
             vScrollbar.viewableFunction = () =>
                 {
-                    if (hScrollbar.isNeeded)
+                    if (hScrollbar.active)
                     {
                         return this.size.height - 15;
                     }
@@ -127,11 +127,11 @@ namespace XNAForms.Forms
             if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(rectangle))
             {
                 Rectangle rect = rectangle;
-                if (vScrollbar.isNeeded)
+                if (vScrollbar.active)
                 {
                     rect.Width -= 15;
                 }
-                if (hScrollbar.isNeeded)
+                if (hScrollbar.active)
                 {
                     rect.Height -= 15;
                 }
@@ -140,11 +140,11 @@ namespace XNAForms.Forms
                 if (!(this is Form))
                 {
                     int x = 0, y = 0;
-                    if (hScrollbar.isNeeded)
+                    if (hScrollbar.active)
                     {
                         x = (int)hScrollbar.value;
                     }
-                    if (vScrollbar.isNeeded)
+                    if (vScrollbar.active)
                     {
                         y = (int)vScrollbar.value;
                     }
