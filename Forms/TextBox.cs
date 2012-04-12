@@ -58,10 +58,7 @@ namespace XNAForms.Forms
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
             GUIHelper.Scissor(Rectangle.Intersect(GUIHelper.sb.GraphicsDevice.Viewport.Bounds, rectangle));
             GUIHelper.DrawStr(text, position + new Position(-vPos + 4, 2), new Color(255, 255, 255, alpha));
-            if (active)
-            {
-                GUIHelper.FillRect(highlighted, new Color(25, 75, 125, 100));
-            }
+            GUIHelper.FillRect(highlighted, new Color(25, 75, 125, 100));
             GUIHelper.Unscissor();
             if (active && timer < 30)
             {
@@ -77,11 +74,7 @@ namespace XNAForms.Forms
             if (Input.LeftD || Input.RightC)
             {
                 active = rectangle.IntersectsMouse();
-                if (!active)
-                {
-                    cPos = 0;
-                }
-                if (cPos != 0 && Input.LeftD)
+                if (Input.LeftD)
                 {
                     cIndex = 0;
                     while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
