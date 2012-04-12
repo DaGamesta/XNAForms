@@ -77,7 +77,11 @@ namespace XNAForms.Forms
             if (Input.LeftD || Input.RightC)
             {
                 active = rectangle.IntersectsMouse();
-                if (Input.LeftD)
+                if (!active)
+                {
+                    cPos = 0;
+                }
+                if (cPos != 0 && Input.LeftD)
                 {
                     cIndex = 0;
                     while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
