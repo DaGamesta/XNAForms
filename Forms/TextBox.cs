@@ -16,7 +16,7 @@ namespace XNAForms.Forms
         private int cIndex;
         private int cPos;
         private int hIndex;
-        private int hPos;
+        private int hPos = 4;
         /// <summary>
         /// Fires when the textbox is activated.
         /// </summary>
@@ -58,7 +58,10 @@ namespace XNAForms.Forms
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
             GUIHelper.Scissor(Rectangle.Intersect(GUIHelper.sb.GraphicsDevice.Viewport.Bounds, rectangle));
             GUIHelper.DrawStr(text, position + new Position(-vPos + 4, 2), new Color(255, 255, 255, alpha));
-            GUIHelper.FillRect(highlighted, new Color(25, 75, 125, 100));
+            if (active)
+            {
+                GUIHelper.FillRect(highlighted, new Color(25, 75, 125, 100));
+            }
             GUIHelper.Unscissor();
             if (active && timer < 30)
             {
