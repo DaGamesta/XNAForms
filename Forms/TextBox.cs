@@ -15,6 +15,8 @@ namespace XNAForms.Forms
     {
         private int cIndex;
         private int cPos;
+        private int hIndex;
+        private int hPos;
         /// <summary>
         /// Fires when the textbox is activated.
         /// </summary>
@@ -42,15 +44,21 @@ namespace XNAForms.Forms
         /// </summary>
         public void Clear()
         {
-            cIndex = cPos = vPos = 0;
+            cIndex = cPos = hIndex = hPos = vPos = 0;
             text = "";
         }
         internal override void Draw()
         {
+            Rectangle highlighted = new Rectangle(position.X + hPos - vPos, position.Y + 2, cPos + vPos - hPos, size.height - 4);
+            if (hPos > cPos + vPos)
+            {
+                highlighted = new Rectangle(position.X + cPos, position.Y + 2, hPos - cPos - vPos, size.height - 4);
+            }
             GUIHelper.FillRect(rectangle, new Color(32, 32, 32, alpha));
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
             GUIHelper.Scissor(Rectangle.Intersect(GUIHelper.sb.GraphicsDevice.Viewport.Bounds, rectangle));
             GUIHelper.DrawStr(text, position + new Position(-vPos + 4, 2), new Color(255, 255, 255, alpha));
+            GUIHelper.FillRect(highlighted, new Color(25, 75, 125, 100));
             GUIHelper.Unscissor();
             if (active && timer < 30)
             {
@@ -63,10 +71,10 @@ namespace XNAForms.Forms
             {
                 GUI.SetCursor(CursorType.TEXT);
             }
-            if (Input.LeftC || Input.RightC)
+            if (Input.LeftD || Input.RightC)
             {
                 active = rectangle.IntersectsMouse();
-                if (active && Input.LeftC)
+                if (Input.LeftD)
                 {
                     cIndex = 0;
                     while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
@@ -74,9 +82,18 @@ namespace XNAForms.Forms
                         cIndex++;
                     }
                     cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
-                    if (onActivate != null)
+                    if (Input.mX > rectangle.Right)
                     {
-                        onActivate.Invoke(this, new EventArgs());
+                        cIndex++;
+                    }
+                    if (Input.LeftC)
+                    {
+                        hIndex = cIndex;
+                        hPos = cPos + vPos;
+                        if (onActivate != null)
+                        {
+                            onActivate.Invoke(this, new EventArgs());
+                        }
                     }
                 }
             }
@@ -85,18 +102,43 @@ namespace XNAForms.Forms
                 timer++;
                 timer %= 60;
                 string next = Input.NextStr();
-                text = text.Substring(0, cIndex) + next + text.Substring(cIndex);
-                cIndex += next.Length;
                 if (next != "")
                 {
+                    if (hPos < cPos)
+                    {
+                        text = text.Substring(0, hIndex) + next + text.Substring(cIndex);
+                        cIndex += next.Length - Math.Abs(hIndex - cIndex);
+                    }
+                    else
+                    {
+                        text = text.Substring(0, cIndex) + next + text.Substring(hIndex);
+                        cIndex += next.Length;
+                    }
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - cPos - vPos;
                     cPos += diff + 4;
                     timer = 0;
+                    hIndex = cIndex;
+                    hPos = cPos + vPos;
                 }
-                if (Input.TypeKey(Keys.Back) && cIndex != 0)
+                if (Input.TypeKey(Keys.Back) && !(hIndex == 0 && cIndex == 0))
                 {
                     timer = 0;
-                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
+                    if (cIndex == hIndex)
+                    {
+                        hIndex = cIndex - 1;
+                        hPos = cPos - 1;
+                    }
+                    int diff = 0;
+                    if (hPos < cPos)
+                    {
+                        diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, hIndex)).X;
+                        text = text.Substring(0, hIndex) + text.Substring(cIndex);
+                        cIndex -= Math.Abs(cIndex - hIndex);
+                    }
+                    else
+                    {
+                        text = text.Substring(0, cIndex) + text.Substring(hIndex);
+                    }
                     if (vPos > 0)
                     {
                         vPos -= diff;
@@ -105,33 +147,62 @@ namespace XNAForms.Forms
                     {
                         cPos -= diff;
                     }
-                    text = text.Remove(cIndex - 1, 1);
-                    cIndex--;
+                    hIndex = cIndex;
+                    hPos = cPos + vPos;
                 }
-                if (Input.TypeKey(Keys.Delete) && cIndex != text.Length)
+                if (Input.TypeKey(Keys.Delete) && !(cIndex == text.Length && hIndex == text.Length))
                 {
                     timer = 0;
-                    int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
+                    if (cIndex == hIndex)
+                    {
+                        hIndex = cIndex + 1;
+                        hPos = cPos + 1;
+                    }
+                    int diff = 0;
+                    if (hPos < cPos)
+                    {
+                        diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, hIndex)).X;
+                        text = text.Substring(0, hIndex) + text.Substring(cIndex);
+                        cIndex -= Math.Abs(cIndex - hIndex);
+                    }
+                    else
+                    {
+                        text = text.Substring(0, cIndex) + text.Substring(hIndex);
+                    }
                     if (vPos > 0)
                     {
                         vPos -= diff;
-                        cPos += diff;
                     }
-                    text = text.Remove(cIndex, 1);
+                    else
+                    {
+                        cPos -= diff;
+                    }
+                    hIndex = cIndex;
+                    hPos = cPos + vPos;
                 }
-                if (Input.TypeKey(Keys.Left) && cIndex != 0)
+                if ((Input.TypeKey(Keys.Left) || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != 0)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
                     cPos -= diff;
                     cIndex--;
+                    if (!Input.Shift)
+                    {
+                        hIndex = cIndex;
+                        hPos = cPos + vPos;
+                    }
                 }
-                else if (Input.TypeKey(Keys.Right) && cIndex != text.Length)
+                else if ((Input.TypeKey(Keys.Right) || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != text.Length)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
                     cPos += diff;
                     cIndex++;
+                    if (!Input.Shift)
+                    {
+                        hIndex = cIndex;
+                        hPos = cPos + vPos;
+                    }
                 }
                 if (Input.TappedKey(Keys.Enter) && onEnter != null)
                 {
