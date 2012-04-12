@@ -44,7 +44,8 @@ namespace XNAForms.Forms
         /// </summary>
         public void Clear()
         {
-            cIndex = cPos = hIndex = hPos = vPos = 0;
+            cIndex = cPos = hIndex = vPos = 0;
+            hPos = 4;
             text = "";
         }
         internal override void Draw()
