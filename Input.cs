@@ -7,30 +7,45 @@ using System.Runtime.InteropServices;
 
 namespace XNAForms
 {
-    internal static class Input
+    /// <summary>
+    /// Manages input.
+    /// </summary>
+    public static class Input
     {
-        internal static bool Control
+        /// <summary>
+        /// Gets if a control key is down.
+        /// </summary>
+        public static bool Control
         {
             get
             {
                 return K.IsKeyDown(Keys.LeftControl) || K.IsKeyDown(Keys.RightControl);
             }
         }
-        internal static bool LeftC
+        /// <summary>
+        /// Gets if the LMB is clicked.
+        /// </summary>
+        public static bool LeftC
         {
             get
             {
                 return M.LeftButton == ButtonState.Pressed && LastM.LeftButton == ButtonState.Released;
             }
         }
-        internal static bool LeftD
+        /// <summary>
+        /// Gets if the LMB is down.
+        /// </summary>
+        public static bool LeftD
         {
             get
             {
                 return M.LeftButton == ButtonState.Pressed;
             }
         }
-        internal static bool LeftR
+        /// <summary>
+        /// Gets if the LMB is released.
+        /// </summary>
+        public static bool LeftR
         {
             get
             {
@@ -43,7 +58,10 @@ namespace XNAForms
         private static KeyboardState LastK;
         private static MouseState LastM;
         private static MouseState M;
-        internal static int mDS
+        /// <summary>
+        /// Gets the scroll wheel value change.
+        /// </summary>
+        public static int mDS
         {
             get
             {
@@ -64,42 +82,60 @@ namespace XNAForms
                 return M.Y - LastM.Y;
             }
         }
-        internal static int mX
+        /// <summary>
+        /// Gets the X position of the mouse.
+        /// </summary>
+        public static int mX
         {
             get
             {
                 return M.X;
             }
         }
-        internal static int mY
+        /// <summary>
+        /// Gets the Y position of the mouse.
+        /// </summary>
+        public static int mY
         {
             get
             {
                 return M.Y;
             }
         }
-        internal static bool RightC
+        /// <summary>
+        /// Gets if the RMB is clicked.
+        /// </summary>
+        public static bool RightC
         {
             get
             {
                 return M.RightButton == ButtonState.Pressed && LastM.RightButton == ButtonState.Released;
             }
         }
-        internal static bool RightD
+        /// <summary>
+        /// Gets if the RMB is down.
+        /// </summary>
+        public static bool RightD
         {
             get
             {
                 return M.RightButton == ButtonState.Pressed;
             }
         }
-        internal static bool RightR
+        /// <summary>
+        /// Gets if the RMB is released.
+        /// </summary>
+        public static bool RightR
         {
             get
             {
                 return M.RightButton == ButtonState.Released && LastM.RightButton == ButtonState.Pressed;
             }
         }
-        internal static bool Shift
+        /// <summary>
+        /// Gets if a shift key is down.
+        /// </summary>
+        public static bool Shift
         {
             get
             {

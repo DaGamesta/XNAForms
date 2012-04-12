@@ -9,7 +9,7 @@ namespace XNAForms.Forms
     /// </summary>
     public sealed class TextArea : Panel
     {
-        private List<Text> texts = new List<Text>(1000);
+        private List<Text> texts = new List<Text>(500);
         /// <summary>
         /// Creates a new textarea.
         /// </summary>
@@ -25,7 +25,10 @@ namespace XNAForms.Forms
         /// <param name="text">The text to add.</param>
         public void Add(Text text)
         {
-            texts.Add(text);
+            foreach (string s in text.text.Split('\n'))
+            {
+                texts.Add(new Text(new Position(0, 0), text.color, s));
+            }
         }
         /// <summary>
         /// Clears the textarea of all text.
@@ -38,7 +41,7 @@ namespace XNAForms.Forms
         internal override void Draw()
         {
             base.Draw();
-            GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, 255));
+            GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
         }
         internal override void Update()
         {

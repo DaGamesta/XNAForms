@@ -6,15 +6,24 @@ using Microsoft.Xna.Framework;
 
 namespace XNAForms
 {
-    internal static class Extensions
+    /// <summary>
+    /// Extension methods.
+    /// </summary>
+    public static class Extensions
     {
-        internal static int Clamp(this int i, int l, int u)
+        /// <summary>
+        /// Clamps an integer between two values.
+        /// </summary>
+        public static int Clamp(this int i, int l, int u)
         {
             i = i >= l ? i : l;
             i = i <= u ? i : u;
             return i;
         }
-        internal static bool IntersectsMouse(this Rectangle r)
+        /// <summary>
+        /// Gets if a rectangle is intersecting the mouse.
+        /// </summary>
+        public static bool IntersectsMouse(this Rectangle r)
         {
             return r.Intersects(new Rectangle(Input.mX, Input.mY, 1, 1));
         }

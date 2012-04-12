@@ -126,28 +126,21 @@ namespace XNAForms.Forms
         {
             if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(rectangle))
             {
-                Rectangle rect = rectangle;
-                if (vScrollbar.active)
-                {
-                    rect.Width -= 15;
-                }
-                if (hScrollbar.active)
-                {
-                    rect.Height -= 15;
-                }
-                GUIHelper.Scissor(rect);
                 Position offset = GUIHelper.offset;
                 if (!(this is Form))
                 {
-                    int x = 0, y = 0;
-                    if (hScrollbar.active)
-                    {
-                        x = (int)hScrollbar.value;
-                    }
+                    Rectangle rect = rectangle;
                     if (vScrollbar.active)
                     {
-                        y = (int)vScrollbar.value;
+                        rect.Width -= 15;
                     }
+                    if (hScrollbar.active)
+                    {
+                        rect.Height -= 15;
+                    }
+                    GUIHelper.Scissor(rect);
+                    int x = hScrollbar.active ? (int)hScrollbar.value : 0;
+                    int y = vScrollbar.active ? (int)vScrollbar.value : 0;
                     GUIHelper.offset = position + offset - new Position(x, y);
                 }
                 else

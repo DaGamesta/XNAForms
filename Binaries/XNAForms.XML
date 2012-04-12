@@ -203,6 +203,66 @@
             Gets the vertical scrollbar's value.
             </summary>
         </member>
+        <member name="T:XNAForms.Input">
+            <summary>
+            Manages input.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.Control">
+            <summary>
+            Gets if a control key is down.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.LeftC">
+            <summary>
+            Gets if the LMB is clicked.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.LeftD">
+            <summary>
+            Gets if the LMB is down.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.LeftR">
+            <summary>
+            Gets if the LMB is released.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.mDS">
+            <summary>
+            Gets the scroll wheel value change.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.mX">
+            <summary>
+            Gets the X position of the mouse.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.mY">
+            <summary>
+            Gets the Y position of the mouse.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.RightC">
+            <summary>
+            Gets if the RMB is clicked.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.RightD">
+            <summary>
+            Gets if the RMB is down.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.RightR">
+            <summary>
+            Gets if the RMB is released.
+            </summary>
+        </member>
+        <member name="P:XNAForms.Input.Shift">
+            <summary>
+            Gets if a shift key is down.
+            </summary>
+        </member>
         <member name="T:XNAForms.Forms.ContextMenuArea">
             <summary>
             Represents a context menu area which contains all information needed for a context menu to be created.
@@ -356,6 +416,21 @@
         <member name="P:XNAForms.Forms.Form.rectangle">
             <summary>
             Gets the bounding rectangle of the entire form, including the titlebar.
+            </summary>
+        </member>
+        <member name="T:XNAForms.Extensions">
+            <summary>
+            Extension methods.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Extensions.Clamp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Clamps an integer between two values.
+            </summary>
+        </member>
+        <member name="M:XNAForms.Extensions.IntersectsMouse(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Gets if a rectangle is intersecting the mouse.
             </summary>
         </member>
         <member name="T:XNAForms.GUI">
