@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Input;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace XNAForms
 {
@@ -15,45 +17,25 @@ namespace XNAForms
         /// <summary>
         /// Gets if a control key is down.
         /// </summary>
-        public static bool Control
-        {
-            get
-            {
-                return K.IsKeyDown(Keys.LeftControl) || K.IsKeyDown(Keys.RightControl);
-            }
-        }
+        public static bool Control { get { return K.IsKeyDown(Keys.LeftControl) || K.IsKeyDown(Keys.RightControl); } }
         /// <summary>
         /// Gets if the LMB is clicked.
         /// </summary>
-        public static bool LeftC
-        {
-            get
-            {
-                return M.LeftButton == ButtonState.Pressed && LastM.LeftButton == ButtonState.Released;
-            }
-        }
+        public static bool LeftC { get { return M.LeftButton == ButtonState.Pressed && LastM.LeftButton == ButtonState.Released; } }
         /// <summary>
         /// Gets if the LMB is down.
         /// </summary>
-        public static bool LeftD
-        {
-            get
-            {
-                return M.LeftButton == ButtonState.Pressed;
-            }
-        }
+        public static bool LeftD { get { return M.LeftButton == ButtonState.Pressed; } }
         /// <summary>
         /// Gets if the LMB is released.
         /// </summary>
-        public static bool LeftR
-        {
-            get
-            {
-                return M.LeftButton == ButtonState.Released && LastM.LeftButton == ButtonState.Pressed;
-            }
-        }
+        public static bool LeftR { get { return M.LeftButton == ButtonState.Released && LastM.LeftButton == ButtonState.Pressed; } }
         private static KeyboardState K;
         internal static int[] KeyCD;
+        private static event Action<Char> keyEvent;
+        private static int keys;
+        private static int[] keysCode = new int[10];
+        private static string[] keysStr = new string[10];
         internal static Array KeysArr;
         private static KeyboardState LastK;
         private static MouseState LastM;
@@ -61,202 +43,62 @@ namespace XNAForms
         /// <summary>
         /// Gets the scroll wheel value change.
         /// </summary>
-        public static int mDS
-        {
-            get
-            {
-                return M.ScrollWheelValue - LastM.ScrollWheelValue;
-            }
-        }
-        internal static int mDX
-        {
-            get
-            {
-                return M.X - LastM.X;
-            }
-        }
-        internal static int mDY
-        {
-            get
-            {
-                return M.Y - LastM.Y;
-            }
-        }
+        public static int mDS { get { return M.ScrollWheelValue - LastM.ScrollWheelValue; } }
+        internal static int mDX { get { return M.X - LastM.X; } }
+        internal static int mDY { get { return M.Y - LastM.Y; } }
         /// <summary>
         /// Gets the X position of the mouse.
         /// </summary>
-        public static int mX
-        {
-            get
-            {
-                return M.X;
-            }
-        }
+        public static int mX { get { return M.X; } }
         /// <summary>
         /// Gets the Y position of the mouse.
         /// </summary>
-        public static int mY
-        {
-            get
-            {
-                return M.Y;
-            }
-        }
+        public static int mY { get { return M.Y; } }
         /// <summary>
         /// Gets if the RMB is clicked.
         /// </summary>
-        public static bool RightC
-        {
-            get
-            {
-                return M.RightButton == ButtonState.Pressed && LastM.RightButton == ButtonState.Released;
-            }
-        }
+        public static bool RightC { get { return M.RightButton == ButtonState.Pressed && LastM.RightButton == ButtonState.Released; } }
         /// <summary>
         /// Gets if the RMB is down.
         /// </summary>
-        public static bool RightD
-        {
-            get
-            {
-                return M.RightButton == ButtonState.Pressed;
-            }
-        }
+        public static bool RightD { get { return M.RightButton == ButtonState.Pressed; } }
         /// <summary>
         /// Gets if the RMB is released.
         /// </summary>
-        public static bool RightR
-        {
-            get
-            {
-                return M.RightButton == ButtonState.Released && LastM.RightButton == ButtonState.Pressed;
-            }
-        }
+        public static bool RightR { get { return M.RightButton == ButtonState.Released && LastM.RightButton == ButtonState.Pressed; } }
         /// <summary>
         /// Gets if a shift key is down.
         /// </summary>
-        public static bool Shift
-        {
-            get
-            {
-                return K.IsKeyDown(Keys.LeftShift) || K.IsKeyDown(Keys.RightShift);
-            }
-        }
+        public static bool Shift { get { return K.IsKeyDown(Keys.LeftShift) || K.IsKeyDown(Keys.RightShift); } }
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
-        private static extern short GetKeyState(int keyCode);
-        internal static string NextStr()
+        static Input()
         {
-            if (TypeKey(Keys.Space))
-                return " ";
-            if (Control)
-            {
-                if (TappedKey(Keys.V))
+            System.Windows.Forms.Application.AddMessageFilter(new KeyMessageFilter());
+            keyEvent += c =>
                 {
-                    if (System.Windows.Forms.Clipboard.ContainsText())
+                    if (keys < 10)
                     {
-                        return System.Windows.Forms.Clipboard.GetText();
+                        keysCode[keys] = c;
+                        keysStr[keys] = c.ToString();
+                        keys++;
                     }
+                };
+        }
+        /// <summary>
+        /// Gets the next string that is inputted.
+        /// </summary>
+        public static string NextStr()
+        {
+            string str = "";
+            for (int i = 0; i < keys; i++)
+            {
+                if (keysCode[i] >= 32 && keysCode[i] != 127)
+                {
+                    str += keysStr[i];
                 }
-                return "";
             }
-            bool shift = Shift ^ (((ushort)GetKeyState(20)) & 0xffff) != 0;
-            bool noCapsShift = Shift;
-            if (TypeKey(Keys.A))
-                return shift ? "A" : "a";
-            if (TypeKey(Keys.B))
-                return shift ? "B" : "b";
-            if (TypeKey(Keys.C))
-                return shift ? "C" : "c";
-            if (TypeKey(Keys.D))
-                return shift ? "D" : "d";
-            if (TypeKey(Keys.E))
-                return shift ? "E" : "e";
-            if (TypeKey(Keys.F))
-                return shift ? "F" : "f";
-            if (TypeKey(Keys.G))
-                return shift ? "G" : "g";
-            if (TypeKey(Keys.H))
-                return shift ? "H" : "h";
-            if (TypeKey(Keys.I))
-                return shift ? "I" : "i";
-            if (TypeKey(Keys.J))
-                return shift ? "J" : "j";
-            if (TypeKey(Keys.K))
-                return shift ? "K" : "k";
-            if (TypeKey(Keys.L))
-                return shift ? "L" : "l";
-            if (TypeKey(Keys.M))
-                return shift ? "M" : "m";
-            if (TypeKey(Keys.N))
-                return shift ? "N" : "n";
-            if (TypeKey(Keys.O))
-                return shift ? "O" : "o";
-            if (TypeKey(Keys.P))
-                return shift ? "P" : "p";
-            if (TypeKey(Keys.Q))
-                return shift ? "Q" : "q";
-            if (TypeKey(Keys.R))
-                return shift ? "R" : "r";
-            if (TypeKey(Keys.S))
-                return shift ? "S" : "s";
-            if (TypeKey(Keys.T))
-                return shift ? "T" : "t";
-            if (TypeKey(Keys.U))
-                return shift ? "U" : "u";
-            if (TypeKey(Keys.V))
-                return shift ? "V" : "v";
-            if (TypeKey(Keys.W))
-                return shift ? "W" : "w";
-            if (TypeKey(Keys.X))
-                return shift ? "X" : "x";
-            if (TypeKey(Keys.Y))
-                return shift ? "Y" : "y";
-            if (TypeKey(Keys.Z))
-                return shift ? "Z" : "z";
-            if (TypeKey(Keys.D0))
-                return noCapsShift ? ")" : "0";
-            if (TypeKey(Keys.D1))
-                return noCapsShift ? "!" : "1";
-            if (TypeKey(Keys.D2))
-                return noCapsShift ? "@" : "2";
-            if (TypeKey(Keys.D3))
-                return noCapsShift ? "#" : "3";
-            if (TypeKey(Keys.D4))
-                return noCapsShift ? "$" : "4";
-            if (TypeKey(Keys.D5))
-                return noCapsShift ? "%" : "5";
-            if (TypeKey(Keys.D6))
-                return noCapsShift ? "^" : "6";
-            if (TypeKey(Keys.D7))
-                return noCapsShift ? "&" : "7";
-            if (TypeKey(Keys.D8))
-                return noCapsShift ? "*" : "8";
-            if (TypeKey(Keys.D9))
-                return noCapsShift ? "(" : "9";
-            if (TypeKey(Keys.OemComma))
-                return noCapsShift ? "<" : ",";
-            if (TypeKey(Keys.OemPeriod))
-                return noCapsShift ? ">" : ".";
-            if (TypeKey(Keys.OemQuestion))
-                return noCapsShift ? "?" : "/";
-            if (TypeKey(Keys.OemOpenBrackets))
-                return noCapsShift ? "{" : "[";
-            if (TypeKey(Keys.OemCloseBrackets))
-                return noCapsShift ? "}" : "]";
-            if (TypeKey(Keys.OemSemicolon))
-                return noCapsShift ? ":" : ";";
-            if (TypeKey(Keys.OemQuotes))
-                return noCapsShift ? "\"" : "'";
-            if (TypeKey(Keys.OemMinus))
-                return noCapsShift ? "_" : "-";
-            if (TypeKey(Keys.OemPlus))
-                return noCapsShift ? "+" : "=";
-            if (TypeKey(Keys.OemPipe))
-                return noCapsShift ? "|" : "\\";
-            if (TypeKey(Keys.OemTilde))
-                return noCapsShift ? "~" : "`";
-            return "";
+            keys = 0;
+            return str;
         }
         internal static bool TappedKey(Keys key)
         {
@@ -296,6 +138,27 @@ namespace XNAForms
                 {
                     KeyCD[i] = 50;
                 }
+            }
+        }
+        private class KeyMessageFilter : System.Windows.Forms.IMessageFilter
+        {
+            [DllImport("user32.dll")]
+            private static extern bool TranslateMessage(IntPtr ptr);
+
+            public bool PreFilterMessage(ref System.Windows.Forms.Message m)
+            {
+                if (m.Msg == 256)
+                {
+                    IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(m));
+                    Marshal.StructureToPtr(m, ptr, true);
+                    TranslateMessage(ptr);
+                }
+                else if (m.Msg == 258)
+                {
+                    if (keyEvent != null)
+                        keyEvent.Invoke((char)m.WParam);
+                }
+                return false;
             }
         }
     }
