@@ -16,6 +16,7 @@ namespace XNAForms.Forms
         private int cIndex;
         private int cPos;
         private int hIndex;
+        private bool hl;
         private int hPos = 4;
         /// <summary>
         /// Fires when the textbox is activated.
@@ -72,10 +73,14 @@ namespace XNAForms.Forms
             {
                 GUI.SetCursor(CursorType.TEXT);
             }
+            if (Input.LeftC)
+            {
+                hl = rectangle.IntersectsMouse();
+            }
             if (Input.LeftD || Input.RightC)
             {
                 active = rectangle.IntersectsMouse();
-                if (Input.LeftD)
+                if (hl && Input.LeftD)
                 {
                     cIndex = 0;
                     while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
