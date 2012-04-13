@@ -87,10 +87,11 @@ namespace XNAForms.Forms
                     {
                         cIndex++;
                     }
-                    if (Input.LeftC)
+                    if (Input.LeftC && active)
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;
+                        Input.ClearStr();
                         if (onActivate != null)
                         {
                             onActivate.Invoke(this, new EventArgs());

@@ -84,6 +84,10 @@ namespace XNAForms
                     }
                 };
         }
+        internal static void ClearStr()
+        {
+            keys = 0;
+        }
         /// <summary>
         /// Gets the next string that is inputted.
         /// </summary>
