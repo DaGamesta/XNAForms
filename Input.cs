@@ -15,6 +15,10 @@ namespace XNAForms
     public static class Input
     {
         /// <summary>
+        /// Gets the special keys that are active (such as up, left, down, right, etc).
+        /// </summary>
+        public static SpecialKeys active { get; private set; }
+        /// <summary>
         /// Gets if a control key is down.
         /// </summary>
         public static bool Control { get { return K.IsKeyDown(Keys.LeftControl) || K.IsKeyDown(Keys.RightControl); } }
@@ -31,12 +35,9 @@ namespace XNAForms
         /// </summary>
         public static bool LeftR { get { return M.LeftButton == ButtonState.Released && LastM.LeftButton == ButtonState.Pressed; } }
         private static KeyboardState K;
-        internal static int[] KeyCD;
-        private static event Action<Char> keyEvent;
         private static int keys;
         private static int[] keysCode = new int[10];
         private static string[] keysStr = new string[10];
-        internal static Array KeysArr;
         private static KeyboardState LastK;
         private static MouseState LastM;
         private static MouseState M;
@@ -55,6 +56,10 @@ namespace XNAForms
         /// </summary>
         public static int mY { get { return M.Y; } }
         /// <summary>
+        /// The typed in string.
+        /// </summary>
+        public static string nextStr;
+        /// <summary>
         /// Gets if the RMB is clicked.
         /// </summary>
         public static bool RightC { get { return M.RightButton == ButtonState.Pressed && LastM.RightButton == ButtonState.Released; } }
@@ -66,6 +71,8 @@ namespace XNAForms
         /// Gets if the RMB is released.
         /// </summary>
         public static bool RightR { get { return M.RightButton == ButtonState.Released && LastM.RightButton == ButtonState.Pressed; } }
+        private static int specials;
+        private static int[] specialsCode = new int[10];
         /// <summary>
         /// Gets if a shift key is down.
         /// </summary>
@@ -74,25 +81,10 @@ namespace XNAForms
         static Input()
         {
             System.Windows.Forms.Application.AddMessageFilter(new KeyMessageFilter());
-            keyEvent += c =>
-                {
-                    if (keys < 10)
-                    {
-                        keysCode[keys] = c;
-                        keysStr[keys] = c.ToString();
-                        keys++;
-                    }
-                };
         }
-        internal static void ClearStr()
+        internal static void NextStr()
         {
-            keys = 0;
-        }
-        /// <summary>
-        /// Gets the next string that is inputted.
-        /// </summary>
-        public static string NextStr()
-        {
+            active = 0;
             string str = "";
             for (int i = 0; i < keys; i++)
             {
@@ -100,28 +92,46 @@ namespace XNAForms
                 {
                     str += keysStr[i];
                 }
-            }
-            keys = 0;
-            return str;
-        }
-        internal static bool TappedKey(Keys key)
-        {
-            return K.IsKeyDown(key) && LastK.IsKeyUp(key);
-        }
-        internal static bool TypeKey(Keys key)
-        {
-            if (TappedKey(key))
-            {
-                return true;
-            }
-            for (int i = 0; i < KeysArr.Length; i++)
-            {
-                if ((Keys)KeysArr.GetValue(i) == key)
+                switch (keysCode[i])
                 {
-                    return KeyCD[i] == 0;
+                    case 8:
+                        active |= SpecialKeys.BACK;
+                        break;
+                    case 13:
+                        active |= SpecialKeys.ENTER;
+                        break;
                 }
             }
-            return false;
+            for (int i = 0; i < specials; i++)
+            {
+                switch (specialsCode[i])
+                {
+                    case 37:
+                        active |= SpecialKeys.LEFT;
+                        break;
+                    case 38:
+                        active |= SpecialKeys.UP;
+                        break;
+                    case 39:
+                        active |= SpecialKeys.RIGHT;
+                        break;
+                    case 40:
+                        active |= SpecialKeys.DOWN;
+                        break;
+                    case 46:
+                        active |= SpecialKeys.DELETE;
+                        break;
+                }
+            }
+            keys = specials = 0;
+            nextStr = str;
+        }
+        /// <summary>
+        /// Gets if a key is tapped.
+        /// </summary>
+        public static bool TappedKey(Keys key)
+        {
+            return K.IsKeyDown(key) && LastK.IsKeyUp(key);
         }
         internal static void Update()
         {
@@ -129,20 +139,6 @@ namespace XNAForms
             K = Keyboard.GetState();
             LastM = M;
             M = Mouse.GetState();
-            for (int i = 0; i < KeyCD.Length; i++)
-            {
-                if (K.IsKeyDown((Keys)KeysArr.GetValue(i)))
-                {
-                    if (KeyCD[i] > 0)
-                    {
-                        KeyCD[i]--;
-                    }
-                }
-                else
-                {
-                    KeyCD[i] = 50;
-                }
-            }
         }
         private class KeyMessageFilter : System.Windows.Forms.IMessageFilter
         {
@@ -153,14 +149,23 @@ namespace XNAForms
             {
                 if (m.Msg == 256)
                 {
+                    if (specials < 10)
+                    {
+                        specialsCode[keys] = (char)m.WParam;
+                        specials++;
+                    }
                     IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(m));
                     Marshal.StructureToPtr(m, ptr, true);
                     TranslateMessage(ptr);
                 }
                 else if (m.Msg == 258)
                 {
-                    if (keyEvent != null)
-                        keyEvent.Invoke((char)m.WParam);
+                    if (keys < 10)
+                    {
+                        keysCode[keys] = (char)m.WParam;
+                        keysStr[keys] = ((char)m.WParam).ToString();
+                        keys++;
+                    }
                 }
                 return false;
             }

@@ -96,7 +96,6 @@ namespace XNAForms.Forms
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;
-                        Input.ClearStr();
                         if (onActivate != null)
                         {
                             onActivate.Invoke(this, new EventArgs());
@@ -108,7 +107,7 @@ namespace XNAForms.Forms
             {
                 timer++;
                 timer %= 60;
-                string next = Input.NextStr();
+                string next = Input.nextStr;
                 if (next != "")
                 {
                     if (hPos < cPos)
@@ -127,7 +126,7 @@ namespace XNAForms.Forms
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
-                if (Input.TypeKey(Keys.Back) && !(hIndex == 0 && cIndex == 0))
+                if ((Input.active & SpecialKeys.BACK) != 0 && !(hIndex == 0 && cIndex == 0))
                 {
                     timer = 0;
                     if (cIndex == hIndex)
@@ -157,7 +156,7 @@ namespace XNAForms.Forms
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
-                if (Input.TypeKey(Keys.Delete) && !(cIndex == text.Length && hIndex == text.Length))
+                if ((Input.active & SpecialKeys.DELETE) != 0 && !(cIndex == text.Length && hIndex == text.Length))
                 {
                     timer = 0;
                     if (cIndex == hIndex)
@@ -187,7 +186,7 @@ namespace XNAForms.Forms
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
-                if ((Input.TypeKey(Keys.Left) || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != 0)
+                if (((Input.active & SpecialKeys.LEFT) != 0 || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != 0)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
@@ -199,7 +198,7 @@ namespace XNAForms.Forms
                         hPos = cPos + vPos;
                     }
                 }
-                else if ((Input.TypeKey(Keys.Right) || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != text.Length)
+                else if (((Input.active & SpecialKeys.RIGHT) != 0 || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != text.Length)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;

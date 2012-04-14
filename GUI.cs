@@ -88,8 +88,6 @@ namespace XNAForms
             Form.tbTex = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(34, 34, 34), 0), new GradientPoint(new Color(17, 17, 17), 28) }, Orientation.VERTICAL);
             GUIHelper.wTex = new Texture2D(game.GraphicsDevice, 1, 1);
             GUIHelper.wTex.SetData<Color>(new[] { Color.White });
-            Input.KeysArr = Enum.GetValues(typeof(Keys));
-            Input.KeyCD = new int[Input.KeysArr.Length];
         }
         internal static void SetCursor(CursorType type)
         {
@@ -101,6 +99,7 @@ namespace XNAForms
         public static void Update()
         {
             Input.Update();
+            Input.NextStr();
             if (contextMenu != null)
             {
                 contextMenu.Update();
