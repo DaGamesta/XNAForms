@@ -85,14 +85,6 @@ namespace XNAForms
         internal static void NextStr()
         {
             active = 0;
-            if (Control && TappedKey(Keys.V))
-            {
-                if (System.Windows.Forms.Clipboard.ContainsText())
-                {
-                    nextStr = System.Windows.Forms.Clipboard.GetText();
-                    return;
-                }
-            }
             string str = "";
             for (int i = 0; i < keys; i++)
             {
@@ -129,9 +121,23 @@ namespace XNAForms
                     case 46:
                         active |= SpecialKeys.DELETE;
                         break;
+                    case 67:
+                        active |= SpecialKeys.C;
+                        break;
+                    case 86:
+                        active |= SpecialKeys.V;
+                        break;
                 }
             }
             keys = specials = 0;
+            if (Control && (active & SpecialKeys.V) != 0)
+            {
+                if (System.Windows.Forms.Clipboard.ContainsText())
+                {
+                    nextStr = System.Windows.Forms.Clipboard.GetText();
+                    return;
+                }
+            }
             nextStr = str;
         }
         /// <summary>

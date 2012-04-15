@@ -91,7 +91,6 @@
     <Compile Include="Forms\MoveInfo.cs" />
     <Compile Include="Forms\ResizeInfo.cs" />
     <Compile Include="Forms\Scrollbar.cs" />
-    <Compile Include="Forms\Slider.cs" />
     <Compile Include="Forms\Text.cs" />
     <Compile Include="Forms\TextArea.cs" />
     <Compile Include="Forms\TextBox.cs" />

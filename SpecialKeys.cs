@@ -8,7 +8,7 @@ namespace XNAForms
     /// <summary>
     /// Specifies special keys that are active.
     /// </summary>
-    public enum SpecialKeys : byte
+    public enum SpecialKeys : short
     {
         /// <summary>
         /// Indicates the left arrow key.
@@ -37,6 +37,14 @@ namespace XNAForms
         /// <summary>
         /// Indicates the enter key.
         /// </summary>
-        ENTER = 64
+        ENTER = 64,
+        /// <summary>
+        /// Indicates the C key, copying text.
+        /// </summary>
+        C = 128,
+        /// <summary>
+        /// Indicates the V key, pasting text.
+        /// </summary>
+        V = 256
     }
 }

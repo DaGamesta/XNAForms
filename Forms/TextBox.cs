@@ -16,7 +16,6 @@ namespace XNAForms.Forms
         private int cIndex;
         private int cPos;
         private int hIndex;
-        private bool hl;
         private int hPos = 4;
         /// <summary>
         /// Fires when the textbox is activated.
@@ -75,22 +74,20 @@ namespace XNAForms.Forms
             }
             if (Input.LeftC)
             {
-                hl = rectangle.IntersectsMouse();
-            }
-            if (Input.LeftD || Input.RightC)
-            {
                 active = rectangle.IntersectsMouse();
-                if (hl && Input.LeftD)
+            }
+            if (active)
+            {
+                if (Input.LeftD && Input.mY >= position.Y && Input.mY <= position.Y + size.height)
                 {
-                    cIndex = 0;
-                    while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
+                    if (rectangle.IntersectsMouse())
                     {
-                        cIndex++;
-                    }
-                    cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
-                    if (Input.mX > rectangle.Right)
-                    {
-                        cIndex++;
+                        cIndex = 0;
+                        while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
+                        {
+                            cIndex++;
+                        }
+                        cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
                     }
                     if (Input.LeftC && active)
                     {
@@ -102,9 +99,6 @@ namespace XNAForms.Forms
                         }
                     }
                 }
-            }
-            if (active)
-            {
                 timer++;
                 timer %= 60;
                 string next = Input.nextStr;
@@ -186,7 +180,7 @@ namespace XNAForms.Forms
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
-                if (((Input.active & SpecialKeys.LEFT) != 0 || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != 0)
+                if (((Input.active & SpecialKeys.LEFT) != 0 || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != 0)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
@@ -198,7 +192,7 @@ namespace XNAForms.Forms
                         hPos = cPos + vPos;
                     }
                 }
-                else if (((Input.active & SpecialKeys.RIGHT) != 0 || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != text.Length)
+                else if (((Input.active & SpecialKeys.RIGHT) != 0 || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != text.Length)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
@@ -208,6 +202,17 @@ namespace XNAForms.Forms
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;
+                    }
+                }
+                if ((Input.active & SpecialKeys.C) != 0 && cIndex != hIndex)
+                {
+                    if (hPos < cPos)
+                    {
+                        System.Windows.Forms.Clipboard.SetText(text.Substring(hIndex, cIndex - hIndex));
+                    }
+                    else
+                    {
+                        System.Windows.Forms.Clipboard.SetText(text.Substring(cIndex, hIndex - cIndex));
                     }
                 }
                 if (Input.TappedKey(Keys.Enter) && onEnter != null)
