@@ -85,6 +85,14 @@ namespace XNAForms
         internal static void NextStr()
         {
             active = 0;
+            if (Control && TappedKey(Keys.V))
+            {
+                if (System.Windows.Forms.Clipboard.ContainsText())
+                {
+                    nextStr = System.Windows.Forms.Clipboard.GetText();
+                    return;
+                }
+            }
             string str = "";
             for (int i = 0; i < keys; i++)
             {
@@ -151,7 +159,7 @@ namespace XNAForms
                 {
                     if (specials < 10)
                     {
-                        specialsCode[keys] = (char)m.WParam;
+                        specialsCode[specials] = (char)m.WParam;
                         specials++;
                     }
                     IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(m));

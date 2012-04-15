@@ -47,6 +47,27 @@ namespace XNAForms
             this.X = X;
             this.Y = Y;
         }
+
+        /// <summary>
+        /// Determines if the position is equal to another position.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Position))
+            {
+                return false;
+            }
+            Position pos = (Position)obj;
+            return pos.X == X && pos.Y == Y;
+        }
+        /// <summary>
+        /// Gets the hash code of the position.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         /// <summary>
         /// Adds two positions together.
         /// </summary>

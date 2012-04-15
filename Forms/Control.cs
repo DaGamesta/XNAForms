@@ -44,6 +44,20 @@ namespace XNAForms.Forms
             }
         }
         /// <summary>
+        /// Gets the actual rectangle of the control if the GUI offset is not zero.
+        /// </summary>
+        public Rectangle realRectangle
+        {
+            get
+            {
+                if (this is Form)
+                {
+                    return rectangle;
+                }
+                return new Rectangle(position.X + GUIHelper.offset.X, position.Y + GUIHelper.offset.Y, size.width, size.height);
+            }
+        }
+        /// <summary>
         /// Size of the control.
         /// </summary>
         public Size size;

@@ -24,6 +24,7 @@ namespace XNAForms.Forms
         /// </summary>
         /// <param name="position">Position for the new image.</param>
         /// <param name="tex">Texture for the new image.</param>
+        /// <param name="scale">Scale of the texture.</param>
         public Image(Position position, Texture2D tex, float scale = 1)
             : base(position, new Size((int)Math.Round(tex.Width * scale), (int)Math.Round(tex.Height * scale)))
         {

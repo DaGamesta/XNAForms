@@ -82,6 +82,8 @@ namespace XNAForms
         public static void Initialize(Game game)
         {
             GUI.game = game;
+            Button.buttonTexture = new Texture2D(game.GraphicsDevice, 1, 2);
+            Button.buttonTexture.SetData<Color>(new[] { new Color(55, 55, 55), new Color(34, 34, 34) });
             Scrollbar.HScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.VERTICAL);
             Scrollbar.VScrollbarTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(60, 60, 60), 0), new GradientPoint(new Color(50, 50, 50), 9), new GradientPoint(new Color(40, 40, 40), 10), new GradientPoint(new Color(30, 30, 30), 20) }, Orientation.HORIZONTAL);
             ContextMenuOption.SelectedTexture = GUIHelper.GenGradTex(new[] { new GradientPoint(new Color(90, 90, 90), 0), new GradientPoint(new Color(80, 80, 80), 9), new GradientPoint(new Color(60, 60, 60), 10), new GradientPoint(new Color(50, 50, 50), 20) }, Orientation.VERTICAL);
