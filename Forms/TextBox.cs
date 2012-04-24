@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace XNAForms.Forms
@@ -16,11 +12,7 @@ namespace XNAForms.Forms
         private int cIndex;
         private int cPos;
         private int hIndex;
-        private int hPos = 4;
-        /// <summary>
-        /// Fires when the textbox is activated.
-        /// </summary>
-        public event ControlEventHandler onActivate;
+        private int hPos;
         /// <summary>
         /// Fires when the textbox is active and the enter key is pressed.
         /// </summary>
@@ -35,7 +27,7 @@ namespace XNAForms.Forms
         /// <param name="size">Size for the new textbox.</param>
         /// <param name="def">Default string for the new textbox.</param>
         public TextBox(Position position, int size, string def = "")
-            : base(position, new Size(size, (int)GUIHelper.StrSize("A").Y + 4))
+            : base(position, new Size(size, (int)GUIHelper.StrSize("ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()").Y + 4))
         {
             text = def;
         }
@@ -80,7 +72,17 @@ namespace XNAForms.Forms
             {
                 if (Input.LeftD && Input.mY >= position.Y && Input.mY <= position.Y + size.height)
                 {
-                    if (rectangle.IntersectsMouse())
+                    if (Input.mX < position.X)
+                    {
+                        cIndex = 0;
+                        cPos = 4;
+                    }
+                    else if (Input.mY > position.X + size.width)
+                    {
+                        cIndex = text.Length;
+                        cPos = (int)GUIHelper.StrSize(text).X - vPos + 4;
+                    }
+                    else
                     {
                         cIndex = 0;
                         while ((int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4 < Input.mX - position.X - 4 && cIndex < text.Length)
@@ -89,14 +91,10 @@ namespace XNAForms.Forms
                         }
                         cPos = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - vPos + 4;
                     }
-                    if (Input.LeftC && active)
+                    if (Input.LeftC)
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;
-                        if (onActivate != null)
-                        {
-                            onActivate.Invoke(this, new EventArgs());
-                        }
                     }
                 }
                 timer++;
@@ -104,19 +102,18 @@ namespace XNAForms.Forms
                 string next = Input.nextStr;
                 if (next != "")
                 {
+                    timer = 0;
                     if (hPos < cPos)
                     {
                         text = text.Substring(0, hIndex) + next + text.Substring(cIndex);
-                        cIndex += next.Length - Math.Abs(hIndex - cIndex);
                     }
                     else
                     {
                         text = text.Substring(0, cIndex) + next + text.Substring(hIndex);
-                        cIndex += next.Length;
                     }
+                    cIndex += next.Length - Math.Abs(hIndex - cIndex);
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - cPos - vPos;
                     cPos += diff + 4;
-                    timer = 0;
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
@@ -180,25 +177,27 @@ namespace XNAForms.Forms
                     hIndex = cIndex;
                     hPos = cPos + vPos;
                 }
-                if (((Input.active & SpecialKeys.LEFT) != 0 || (Input.LeftD && Input.mX < rectangle.X)) && cIndex != 0)
+                if (((Input.active & SpecialKeys.LEFT) != 0 ||
+                    (Input.LeftD && Input.mX < position.X && Input.mY >= position.Y && Input.mY <= position.Y + size.height)) && cIndex != 0)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex - 1)).X;
                     cPos -= diff;
                     cIndex--;
-                    if (!Input.Shift)
+                    if (!Input.Shift && !(Input.mX < position.X || Input.mX > position.X + size.width))
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;
                     }
                 }
-                else if (((Input.active & SpecialKeys.RIGHT) != 0 || (Input.LeftD && Input.mX > rectangle.Right)) && cIndex != text.Length)
+                else if (((Input.active & SpecialKeys.RIGHT) != 0 ||
+                    (Input.LeftD && Input.mX > position.X + size.width && Input.mY >= position.Y && Input.mY <= position.Y + size.height)) && cIndex != text.Length)
                 {
                     timer = 0;
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex + 1)).X - (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X;
                     cPos += diff;
                     cIndex++;
-                    if (!Input.Shift)
+                    if (!Input.Shift && !(Input.mX < position.X || Input.mX > position.X + size.width))
                     {
                         hIndex = cIndex;
                         hPos = cPos + vPos;

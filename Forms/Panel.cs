@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 namespace XNAForms.Forms
 {
     /// <summary>
-    /// Groups collections of controls together, and allows for two scrollbars as well.
+    /// Groups collections of controls together, allowing for two scrollbars as well.
     /// </summary>
     public class Panel : Control
     {
@@ -23,7 +23,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                return (int)hScrollbar.value;
+                return hScrollbar.active ? (int)hScrollbar.value : 0;
             }
         }
         internal Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
@@ -34,7 +34,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                return (int)vScrollbar.value;
+                return vScrollbar.active ? (int)vScrollbar.value : 0;
             }
         }
 
@@ -139,9 +139,7 @@ namespace XNAForms.Forms
                         rect.Height -= 15;
                     }
                     GUIHelper.Scissor(rect);
-                    int x = hScrollbar.active ? (int)hScrollbar.value : 0;
-                    int y = vScrollbar.active ? (int)vScrollbar.value : 0;
-                    GUIHelper.offset = position + offset - new Position(x, y);
+                    GUIHelper.offset = position + offset - new Position(hValue, vValue);
                 }
                 else
                 {

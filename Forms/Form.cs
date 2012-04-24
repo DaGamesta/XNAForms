@@ -297,6 +297,13 @@ namespace XNAForms.Forms
                 }
                 base.Update();
             }
+            else
+            {
+                foreach (Control c in controls)
+                {
+                    c.Reposition(this);
+                }
+            }
         }
     }
 }
