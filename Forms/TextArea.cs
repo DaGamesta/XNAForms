@@ -68,6 +68,7 @@ namespace XNAForms.Forms
                     y += (int)GUIHelper.StrSize(currLine).Y;
                 }
             }
+            stepSize = controls.Count == 0 ? 0 : controls[0].size.height * 3;
             base.Update();
         }
     }

@@ -26,6 +26,10 @@ namespace XNAForms.Forms
                 return hScrollbar.active ? (int)hScrollbar.value : 0;
             }
         }
+        /// <summary>
+        /// Scrollbar step size.
+        /// </summary>
+        protected int stepSize = 10;
         internal Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
         /// <summary>
         /// Gets the vertical scrollbar's value.
@@ -176,6 +180,10 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
+            if (!(this is Form) && rectangle.IntersectsMouse())
+            {
+                vScrollbar.scrollbarPosition += stepSize * Math.Sign(Input.mDS);
+            }
             hScrollbar.Reposition(this);
             hScrollbar.Update();
             vScrollbar.Reposition(this);

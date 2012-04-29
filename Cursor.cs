@@ -26,7 +26,8 @@ namespace XNAForms
             }
             else
             {
-                GUIHelper.sb.Draw(GUI.cursorTexs[(int)type], new Vector2(Input.mX, Input.mY) + new Vector2(-GUI.cursorTexs[(int)type].Width / 2, -GUI.cursorTexs[(int)type].Height / 2), null, Color.White, 0, Vector2.Zero, 1, (SpriteEffects)flip, 0);
+                GUIHelper.sb.Draw(GUI.cursorTexs[(int)type],new Vector2(Input.mX, Input.mY) +
+                    new Vector2(-GUI.cursorTexs[(int)type].Width / 2, -GUI.cursorTexs[(int)type].Height / 2),null, Color.White, 0, Vector2.Zero, 1, (SpriteEffects)flip, 0);
             }
         }
     }

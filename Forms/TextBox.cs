@@ -10,9 +10,9 @@ namespace XNAForms.Forms
     public class TextBox : Control
     {
         private int cIndex;
-        private int cPos;
+        private int cPos = 4;
         private int hIndex;
-        private int hPos;
+        private int hPos = 4;
         /// <summary>
         /// Fires when the textbox is active and the enter key is pressed.
         /// </summary>
@@ -36,8 +36,8 @@ namespace XNAForms.Forms
         /// </summary>
         public void Clear()
         {
-            cIndex = cPos = hIndex = vPos = 0;
-            hPos = 4;
+            cIndex = hIndex = vPos = 0;
+            cPos = hPos = 4;
             text = "";
         }
         internal override void Draw()
@@ -106,12 +106,13 @@ namespace XNAForms.Forms
                     if (hPos < cPos)
                     {
                         text = text.Substring(0, hIndex) + next + text.Substring(cIndex);
+                        cIndex += next.Length - Math.Abs(hIndex - cIndex);
                     }
                     else
                     {
                         text = text.Substring(0, cIndex) + next + text.Substring(hIndex);
+                        cIndex += next.Length;
                     }
-                    cIndex += next.Length - Math.Abs(hIndex - cIndex);
                     int diff = (int)GUIHelper.StrSize(text.Substring(0, cIndex)).X - cPos - vPos;
                     cPos += diff + 4;
                     hIndex = cIndex;
