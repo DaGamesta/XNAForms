@@ -13,8 +13,10 @@ namespace XNAForms
     public static class GUIHelper
     {
         internal static SpriteFont font;
+        internal static int fontY;
         internal static Position offset;
         internal static SpriteBatch sb;
+        internal static Rectangle scissor;
         internal static Texture2D wTex;
 
         /// <summary>
@@ -107,8 +109,8 @@ namespace XNAForms
         {
             sb.End();
             sb.Begin(SpriteSortMode.Deferred, null, null, null, new RasterizerState() { ScissorTestEnable = true });
-            r.X += offset.X;
-            r.Y += offset.Y;
+            r.Offset(offset.X, offset.Y);
+            scissor = r;
             sb.GraphicsDevice.ScissorRectangle = Rectangle.Intersect(r, sb.GraphicsDevice.Viewport.Bounds);
         }
         /// <summary>

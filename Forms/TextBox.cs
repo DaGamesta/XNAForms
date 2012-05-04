@@ -27,7 +27,7 @@ namespace XNAForms.Forms
         /// <param name="size">Size for the new textbox.</param>
         /// <param name="def">Default string for the new textbox.</param>
         public TextBox(Position position, int size, string def = "")
-            : base(position, new Size(size, (int)GUIHelper.StrSize("ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()").Y + 4))
+            : base(position, new Size(size, GUIHelper.fontY + 4))
         {
             text = def;
         }

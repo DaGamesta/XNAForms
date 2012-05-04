@@ -50,6 +50,7 @@ namespace XNAForms
         public static void BindFont(SpriteFont font)
         {
             GUIHelper.font = font;
+            GUIHelper.fontY = (int)GUIHelper.StrSize("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()").Y;
         }
         /// <summary>
         /// Draws the GUI. This should be called after ending the spritebatch drawing.

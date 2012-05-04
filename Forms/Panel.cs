@@ -153,7 +153,7 @@ namespace XNAForms.Forms
                 {
                     Rectangle r = c.rectangle;
                     r.Offset(GUIHelper.offset.X, GUIHelper.offset.Y);
-                    if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(r))
+                    if (GUIHelper.sb.GraphicsDevice.Viewport.Bounds.Intersects(r) && (GUIHelper.scissor.Intersects(r) || this is Form))
                     {
                         c.Draw();
                     }
@@ -180,9 +180,9 @@ namespace XNAForms.Forms
         }
         internal override void Update()
         {
-            if (!(this is Form) && rectangle.IntersectsMouse())
+            if (!(this is Form) && rectangle.IntersectsMouse() && vScrollbar.total != 0)
             {
-                vScrollbar.scrollbarPosition += stepSize * Math.Sign(Input.mDS);
+                vScrollbar.scrollbarPosition += (int)Math.Round(((float)stepSize / (float)vScrollbar.total) * vScrollbar.size * Math.Sign(Input.mDS));
             }
             hScrollbar.Reposition(this);
             hScrollbar.Update();

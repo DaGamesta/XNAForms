@@ -9,7 +9,6 @@ namespace XNAForms.Forms
     /// </summary>
     public sealed class TextArea : Panel
     {
-        private List<Text> texts = new List<Text>(500);
         /// <summary>
         /// Creates a new textarea.
         /// </summary>
@@ -18,6 +17,7 @@ namespace XNAForms.Forms
         public TextArea(Position position, Size size)
             : base(position, size)
         {
+            stepSize = GUIHelper.fontY * 3;
         }
         /// <summary>
         /// Adds a line of text to the textarea
@@ -27,7 +27,7 @@ namespace XNAForms.Forms
         {
             foreach (string s in text.text.Split('\n'))
             {
-                texts.Add(new Text(new Position(0, 0), text.color, s));
+                controls.Add(new Text(new Position(4, controls.Count * GUIHelper.fontY), text.color, s));
             }
         }
         /// <summary>
@@ -36,40 +36,11 @@ namespace XNAForms.Forms
         public void Clear()
         {
             controls.Clear();
-            texts.Clear();
         }
         internal override void Draw()
         {
             base.Draw();
             GUIHelper.OutlineRect(rectangle, new Color(0, 0, 0, alpha));
-        }
-        internal override void Update()
-        {
-            controls.Clear();
-            int y = 0;
-            for (int i = 0; i < texts.Count; i++)
-            {
-                string currLine = "";
-                string str = texts[i].text;
-                string[] strArr = str.Split(' ');
-                foreach (string word in strArr)
-                {
-                    if (GUIHelper.StrSize(currLine + word).X >= size.width - (vScrollbar.active ? 25 : 6))
-                    {
-                        controls.Add(new Text(new Position(4, y), texts[i].color, currLine));
-                        y += (int)GUIHelper.StrSize(currLine).Y;
-                        currLine = "";
-                    }
-                    currLine += word + " ";
-                }
-                if (currLine != "")
-                {
-                    controls.Add(new Text(new Position(4, y), texts[i].color, currLine));
-                    y += (int)GUIHelper.StrSize(currLine).Y;
-                }
-            }
-            stepSize = controls.Count == 0 ? 0 : controls[0].size.height * 3;
-            base.Update();
         }
     }
 }
