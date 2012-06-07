@@ -101,6 +101,10 @@ namespace XNAForms
         /// </summary>
         public static void Update()
         {
+            if (!game.IsActive)
+            {
+                return;
+            }
             Input.Update();
             Input.NextStr();
             if (contextMenu != null)

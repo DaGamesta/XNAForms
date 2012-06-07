@@ -290,21 +290,24 @@ namespace XNAForms.Forms
                 }
             }
             #endregion
-            if (!minimized)
+            if (GUI.contextMenu != null && !minimized)
             {
-                if (GUI.contextMenu != null)
+                MaskUpdate<ContextMenuArea>();
+            }
+            else if (isActive)
+            {
+                if (onUpdate != null)
                 {
-                    MaskUpdate<ContextMenuArea>();
+                    onUpdate.Invoke();
                 }
-                else if (isActive)
+                if (!minimized)
                 {
-                    if (onUpdate != null)
-                    {
-                        onUpdate.Invoke();
-                    }
                     base.Update();
                 }
-                else
+            }
+            else
+            {
+                if (!minimized)
                 {
                     foreach (Control c in controls)
                     {
