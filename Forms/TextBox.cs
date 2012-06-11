@@ -77,7 +77,7 @@ namespace XNAForms.Forms
                         cIndex = 0;
                         cPos = 4;
                     }
-                    else if (Input.mY > position.X + size.width)
+                    else if (Input.mX > position.X + size.width)
                     {
                         cIndex = text.Length;
                         cPos = (int)GUIHelper.StrSize(text).X - vPos + 4;
