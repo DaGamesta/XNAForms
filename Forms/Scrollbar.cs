@@ -13,7 +13,7 @@ namespace XNAForms.Forms
         internal static Texture2D VScrollbarTexture;
 
         private MoveInfo movInfo;
-        internal bool isVertical
+        public bool isVertical
         {
             get
             {
@@ -21,15 +21,15 @@ namespace XNAForms.Forms
             }
         }
         private Orientation orientation;
-        internal int scrollbarPosition;
-        internal new int size
+        public int scrollbarPosition;
+        public new int size
         {
             get
             {
                 return isVertical ? base.size.height : base.size.width;
             }
         }
-        internal int sSize;
+        public int sSize;
         private int realPos
         {
             get
@@ -44,29 +44,29 @@ namespace XNAForms.Forms
                 }
             }
         }
-        internal int total
+        public int total
         {
             get
             {
                 return totalFunction();
             }
         }
-        internal Func<int> totalFunction;
-        internal float value
+        public Func<int> totalFunction;
+        public float value
         {
             get
             {
                 return active ? ((float)realPos / (float)(size - sSize)) * (float)(total - viewable) : 0;
             }
         }
-        internal int viewable
+        public int viewable
         {
             get
             {
                 return viewableFunction();
             }
         }
-        internal Func<int> viewableFunction;
+        public Func<int> viewableFunction;
 
         internal Scrollbar(Position position, int size, Orientation orientation = Orientation.VERTICAL)
             : base(position, orientation == Orientation.VERTICAL ? new Size(15, size) : new Size(size, 15))

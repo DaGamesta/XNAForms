@@ -94,6 +94,8 @@ namespace XNAForms.Forms
         {
             text = title;
             this.position.Y += tBarHeight;
+
+            Update();
         }
 
         /// <summary>
