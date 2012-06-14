@@ -30,7 +30,7 @@ namespace XNAForms.Forms
         {
             get
             {
-                return GUI.formOrder[GUI.formOrder.Count - 1] == index;
+                return GUI.formOrder.Count == 0 ? false : GUI.formOrder[GUI.formOrder.Count - 1] == index;
             }
         }
         private bool minimized;
