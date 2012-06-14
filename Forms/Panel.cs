@@ -15,7 +15,10 @@ namespace XNAForms.Forms
         /// The controls that the panel encapsulates.
         /// </summary>
         protected internal List<Control> controls = new List<Control>();
-        internal Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
+        /// <summary>
+        /// The horizontal scrollbar.
+        /// </summary>
+        protected Scrollbar hScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.HORIZONTAL);
         /// <summary>
         /// Gets the horizontal scrollbar's value.
         /// </summary>
@@ -30,7 +33,10 @@ namespace XNAForms.Forms
         /// Scrollbar step size.
         /// </summary>
         protected int stepSize = 10;
-        internal Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
+        /// <summary>
+        /// The vertical scrollbar.
+        /// </summary>
+        protected Scrollbar vScrollbar = new Scrollbar(new Position(0, 0), 0, Orientation.VERTICAL);
         /// <summary>
         /// Gets the vertical scrollbar's value.
         /// </summary>
